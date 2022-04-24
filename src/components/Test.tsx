@@ -1,6 +1,4 @@
 import { useQuery } from '@apollo/client';
-import { useAuth0 } from '@auth0/auth0-react';
-import { useEffect, useState } from 'react';
 import { getTests } from '../graphql/queries';
 
 export default function Test() {
@@ -19,7 +17,7 @@ export default function Test() {
     return console.log('data :>> ', data.tests);
   };
 
-  TestsQuery();
+  // TestsQuery();
 
   //Logs
 
