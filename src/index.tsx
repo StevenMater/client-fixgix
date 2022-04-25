@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { Auth0Provider } from '@auth0/auth0-react';
+import { BrowserRouter } from 'react-router-dom';
 
 //Enc constants
 const domain: string = process.env.REACT_APP_AUTH0_DOMAIN as string;
@@ -17,11 +18,14 @@ root.render(
   <Auth0Provider
     domain={domain}
     clientId={clientId}
-    redirectUri={window.location.origin}
+    // redirectUri={window.location.origin}
+    redirectUri={'http://localhost:3000/fixgix'}
     audience={audience}
     scope={scope}
     useRefreshTokens={true}
   >
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Auth0Provider>
 );

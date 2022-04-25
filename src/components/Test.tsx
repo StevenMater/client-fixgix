@@ -1,29 +1,21 @@
-import { useQuery } from '@apollo/client';
-import { getTests } from '../graphql/queries';
+import { useQuery, useReactiveVar } from '@apollo/client';
+import { getGigsByUser } from '../graphql/queries';
 
 export default function Test() {
-  const TestsQuery = () => {
-    const { loading, error, data } = useQuery(getTests);
+  const { loading, error, data } = useQuery(getGigsByUser);
+  // const test = useReactiveVar(filterVar);
 
-    if (loading) {
-      return <div>Loading...</div>;
-    }
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-    if (error) {
-      console.error(error);
-      return <div>Error!</div>;
-    }
-
-    return console.log('data :>> ', data.tests);
-  };
-
-  // TestsQuery();
+  if (error) {
+    console.error(error);
+    return <div>Error!</div>;
+  }
 
   //Logs
-
-  //   if (!user || isLoading) return <div>'Loading...'</div>;
-
-  //   if (isLoading) return <div>'Loading...'</div>;
-
-  return <div>TEST</div>;
+  // console.log('test :>> ', test);
+  return <div>{data.users[0].firstName}</div>;
+  // return null;
 }
