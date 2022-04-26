@@ -22,7 +22,7 @@ export default function GigsPage() {
     return <div>Error!</div>;
   }
 
-  const { id, name, pictureUrl, gigs } = data.groups_by_pk;
+  const { name, gigs } = data.groups_by_pk;
 
   //Logs
   //   console.log('data :>> ', data.groups_by_pk);

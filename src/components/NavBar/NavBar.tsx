@@ -7,7 +7,7 @@ import { MyGroups } from '../../graphql/queries';
 //Components
 import LoginButton from '../LoginButton';
 import LogoutButton from '../LogoutButton';
-import { filterVar } from '../../cache';
+import { filterVar, newGigVar } from '../../cache';
 import { NavLink } from 'react-router-dom';
 
 export default function NavBar() {
@@ -53,6 +53,7 @@ export default function NavBar() {
             );
           })}
       </select>
+      <button onClick={() => newGigVar(!newGigVar())}>New gig</button>
       <h5>{user.name}</h5>
       {userControls}
       <img src={user.picture} alt={user.name} className="profile-picture" />

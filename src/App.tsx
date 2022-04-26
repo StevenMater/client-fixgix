@@ -8,6 +8,7 @@ import {
   InMemoryCache,
   ApolloProvider,
   HttpLink,
+  useReactiveVar,
 } from '@apollo/client';
 
 //Components
@@ -20,8 +21,9 @@ import GigsPage from './components/GigsPage/GigsPage';
 import GigDetailsPage from './components/GigDetailsPage/GigDetailsPage';
 
 //Cache
-import { isEditor } from './cache';
+import { isEditorVar, newGigVar } from './cache';
 import Loading from './components/Loading/Loading';
+import NewGig from './components/NewGig /NewGig';
 
 //Env constants
 const graphqlUri: string = process.env.REACT_APP_GRAPHQL_URI as string;
@@ -33,8 +35,9 @@ function App() {
 
   const [accessToken, setAccessToken] = useState('');
   const [userMetadata, setUserMetadata] = useState(null);
-
   const [client, setClient] = useState<any | undefined>(undefined);
+
+  const newGig = useReactiveVar(newGigVar);
 
   const getAccessToken = async () => {
     try {
@@ -104,7 +107,8 @@ function App() {
   // console.log('accessToken :>> ', accessToken);
   // console.log('userMetadata :>> ', userMetadata);
   // console.log('isLoading :>> ', isLoading);
-  // console.log('isEditor :>> ', isEditor());
+  // console.log('isEditor :>> ', isEditorVar());
+  console.log('newGig :>> ', newGig);
 
   return (
     <ApolloProvider client={client}>
@@ -116,6 +120,7 @@ function App() {
           <Route path="/fixgix" element={<GigsPage />} />
           <Route path="/gigs/:gigId" element={<GigDetailsPage />} />
         </Routes>
+        {newGig && <NewGig />}
       </div>
     </ApolloProvider>
   );

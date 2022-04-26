@@ -1,5 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { MyGigById } from '../../graphql/queries';
+import Loading from '../Loading/Loading';
 
 export default function GigsDetailsPageIsEditor({ gigId }: { gigId: string }) {
   const { loading, error, data } = useQuery(MyGigById, {
@@ -7,7 +8,7 @@ export default function GigsDetailsPageIsEditor({ gigId }: { gigId: string }) {
   });
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {
