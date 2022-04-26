@@ -1,0 +1,11 @@
+.gigs-details-container {
+  min-height: 90vh;
+}
+
+.details-block {
+  border: 1px;
+  border-color: #202a25;
+  border-style: solid;
+  padding: 3em;
+  margin: 1em;
+}

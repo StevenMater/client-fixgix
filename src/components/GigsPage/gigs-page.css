@@ -1,0 +1,9 @@
+.gigs-container {
+  min-height: 90vh;
+}
+
+.card-container {
+  background-color: #247ba0;
+  border: 3px;
+  border-style: solid;
+}

@@ -2,8 +2,8 @@ import { useQuery, useReactiveVar } from '@apollo/client';
 import { getGigsByUser } from '../graphql/queries';
 
 export default function Test() {
-  const { loading, error, data } = useQuery(getGigsByUser);
   // const test = useReactiveVar(filterVar);
+  const { loading, error, data } = useQuery(getGigsByUser);
 
   if (loading) {
     return <div>Loading...</div>;
