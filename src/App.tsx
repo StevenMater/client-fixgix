@@ -14,16 +14,16 @@ import {
 //Components
 import Test from './components/Test';
 import NavBar from './components/NavBar/NavBar';
-import Welcome from './components/Welcome';
-
-//Pages
-import GigsPage from './components/GigsPage/GigsPage';
-import GigDetailsPage from './components/GigDetailsPage/GigDetailsPage';
-
-//Cache
-import { isEditorVar, newGigVar } from './cache';
 import Loading from './components/Loading/Loading';
 import NewGig from './components/NewGig /NewGig';
+
+//Pages
+import GigsPage from './pages/GigsPage/GigsPage';
+import GigDetailsPage from './pages/GigDetailsPage/GigDetailsPage';
+import LoginPage from './pages/LoginPage/LoginPage';
+
+//Cache
+import { isEditorVar, newGigVar } from './constants/cache';
 
 //Env constants
 const graphqlUri: string = process.env.REACT_APP_GRAPHQL_URI as string;
@@ -108,7 +108,7 @@ function App() {
   // console.log('userMetadata :>> ', userMetadata);
   // console.log('isLoading :>> ', isLoading);
   // console.log('isEditor :>> ', isEditorVar());
-  console.log('newGig :>> ', newGig);
+  // console.log('newGig :>> ', newGig);
 
   return (
     <ApolloProvider client={client}>
@@ -116,8 +116,8 @@ function App() {
         <NavBar />
         {/* <Test /> */}
         <Routes>
-          <Route path="/" element={<Welcome />} />
-          <Route path="/fixgix" element={<GigsPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<GigsPage />} />
           <Route path="/gigs/:gigId" element={<GigDetailsPage />} />
         </Routes>
         {newGig && <NewGig />}

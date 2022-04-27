@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { MyGigById } from '../../graphql/queries';
+import { MyGigById } from '../../constants/queries';
 
 export default function GigsDetailsIsViewer({ gigId }: { gigId: string }) {
   const { loading, error, data } = useQuery(MyGigById, {

@@ -1,7 +1,11 @@
-.nav-bar-container {
-  background-color: #247ba0;
+.nav-bar-loading {
+  background-color: var(--background-color);
   height: 10vh;
-  margin-right: 0;
+}
+
+.nav-bar-container {
+  background-color: var(--background-secondary);
+  height: 10vh;
 }
 
 .profile-picture {

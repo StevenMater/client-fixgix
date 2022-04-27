@@ -4,7 +4,7 @@ import { useReactiveVar } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import GigsDetailsIsEditor from './GigsDetailsIsEditor';
 import GigsDetailsIsViewer from './GigsDetailsIsViewer';
-import { isEditorVar } from '../../cache';
+import { isEditorVar } from '../../constants/cache';
 
 export default function GigDetailsPage() {
   const { gigId } = useParams<string>();

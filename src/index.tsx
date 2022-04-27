@@ -19,7 +19,7 @@ root.render(
     domain={domain}
     clientId={clientId}
     // redirectUri={window.location.origin}
-    redirectUri={'http://localhost:3000/fixgix'}
+    redirectUri={'http://localhost:3000/'}
     audience={audience}
     scope={scope}
     useRefreshTokens={true}

@@ -1,11 +1,24 @@
+:root {
+  /* --background-color: #b9d6f2; */
+  --background-color: #ffffff;
+  --background-secondary: #247ba0;
+  --alt-color: #b9d6f2;
+  --text-color: #202a25;
+  --decoration-color: #5fdd9d;
+}
+
 .App {
   text-align: center;
-  background-color: #b9d6f2;
-  color: #202a25;
+  background-color: var(--background-color);
+  color: var(--text-color);
   text-decoration: none;
 }
 
 .navlink {
   text-decoration: none;
-  color: #202a25;
+  color: var(--text-color);
+}
+
+.Button {
+  color: var(--decoration-color);
 }

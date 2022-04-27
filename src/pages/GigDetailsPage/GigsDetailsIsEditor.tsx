@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
-import { MyGigById } from '../../graphql/queries';
-import Loading from '../Loading/Loading';
+import { MyGigById } from '../../constants/queries';
+import Loading from '../../components/Loading/Loading';
 
 export default function GigsDetailsPageIsEditor({ gigId }: { gigId: string }) {
   const { loading, error, data } = useQuery(MyGigById, {

@@ -3,7 +3,8 @@
 }
 
 .card-container {
-  background-color: #247ba0;
+  background-color: var(--alt-color);
+  box-shadow: 7px 7px 5px;
   border: 5px;
   border-style: solid;
 }

@@ -1,10 +1,10 @@
 import './gigs-page.css';
 
 import { useQuery, useReactiveVar } from '@apollo/client';
-import { filterVar } from '../../cache';
-import { MyGigsByGroup } from '../../graphql/queries';
+import { filterVar } from '../../constants/cache';
+import { MyGigsByGroup } from '../../constants/queries';
 import { NavLink } from 'react-router-dom';
-import Loading from '../Loading/Loading';
+import Loading from '../../components/Loading/Loading';
 
 export default function GigsPage() {
   const groupId = useReactiveVar(filterVar);
@@ -12,6 +12,9 @@ export default function GigsPage() {
   const { loading, error, data } = useQuery(MyGigsByGroup, {
     variables: { groupId },
   });
+
+  //Logs
+  //   console.log('data :>> ', data.groups_by_pk);
 
   if (loading) {
     return <Loading />;
@@ -23,9 +26,6 @@ export default function GigsPage() {
   }
 
   const { name, gigs } = data.groups_by_pk;
-
-  //Logs
-  //   console.log('data :>> ', data.groups_by_pk);
 
   return (
     <div className="gigs-container d-flex flex-column p-3 mh-100">

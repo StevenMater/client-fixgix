@@ -1,5 +1,5 @@
 import { useQuery, useReactiveVar } from '@apollo/client';
-import { getGigsByUser } from '../graphql/queries';
+import { getGigsByUser } from '../constants/queries';
 
 export default function Test() {
   // const test = useReactiveVar(filterVar);
