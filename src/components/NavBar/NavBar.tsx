@@ -13,7 +13,7 @@ import {
   Select,
   Switch,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 //Components
 import LoginButton from '../LoginButton';
@@ -27,8 +27,6 @@ import { MyGroups } from '../../constants/queries';
 
 export default function NavBar() {
   const { user, isAuthenticated } = useAuth0();
-
-  // const [filter, setFilter] = useState<string>('');
 
   const filter = useReactiveVar(filterVar);
   const isEditor = useReactiveVar(isEditorVar);
@@ -88,21 +86,6 @@ export default function NavBar() {
             })}
         </Select>
       </FormControl>
-
-      {/* <select
-        value={filterVar()}
-        onChange={(event) => filterVar(event.target.value)}
-      >
-        {data.groups.map((group: any) => {
-          const { id, name } = group;
-
-          return (
-            <option key={id} value={id}>
-              {name}
-            </option>
-          );
-        })}
-      </select> */}
 
       <Button variant="contained" onClick={() => newGigVar(!newGigVar())}>
         New gig
