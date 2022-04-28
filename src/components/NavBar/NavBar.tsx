@@ -20,7 +20,7 @@ import LoginButton from '../LoginButton';
 import LogoutButton from '../LogoutButton';
 
 //Cache
-import { filterVar, isEditorVar, newGigVar } from '../../constants/cache';
+import { groupIdVar, isEditorVar, newGigVar } from '../../constants/cache';
 
 //Queries
 import { MyGroups } from '../../constants/queries';
@@ -28,7 +28,7 @@ import { MyGroups } from '../../constants/queries';
 export default function NavBar() {
   const { user, isAuthenticated } = useAuth0();
 
-  const filter = useReactiveVar(filterVar);
+  const filter = useReactiveVar(groupIdVar);
   const isEditor = useReactiveVar(isEditorVar);
 
   const { loading, error, data } = useQuery(MyGroups);
@@ -41,7 +41,7 @@ export default function NavBar() {
 
   useEffect(() => {
     if (data) {
-      filterVar(data.groups[0].id);
+      groupIdVar(data.groups[0].id);
     }
   }, [data]);
 
@@ -72,7 +72,7 @@ export default function NavBar() {
         <Select
           value={filter}
           label="Group"
-          onChange={(event) => filterVar(event.target.value)}
+          onChange={(event) => groupIdVar(event.target.value)}
         >
           {isAuthenticated &&
             data.groups.map((group: any) => {
@@ -87,9 +87,11 @@ export default function NavBar() {
         </Select>
       </FormControl>
 
-      <Button variant="contained" onClick={() => newGigVar(!newGigVar())}>
-        New gig
-      </Button>
+      {isEditor && (
+        <Button variant="contained" onClick={() => newGigVar(!newGigVar())}>
+          New gig
+        </Button>
+      )}
 
       <h5>{user?.name}</h5>
 

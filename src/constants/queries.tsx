@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 
+//Queries
 export const MyGroups = gql`
   query MyGroups {
     groups {
@@ -28,18 +29,18 @@ export const MyGigsByGroup = gql`
 export const MyGigById = gql`
   query MyGigById($gigId: uuid = "") {
     gigs_by_pk(id: $gigId) {
-      amountOfSets
-      dressCode
-      extraDJ
-      extraXL
+      showAmountOfSets
+      gigDressCode
+      showExtraDJ
+      showExtraXL
       gigDate
       gigImportantGuests
       gigOccasion
       gigStatus
       gigTitle
-      isDinner
-      isParking
-      payMembers
+      gigIsDinner
+      gigIsParking
+      gigPayMembers
       timeCheckInGroup
       timeCheckInSoundEngineer
       timeCheckOut
@@ -63,17 +64,44 @@ export const MyGigById = gql`
   }
 `;
 
-export const getGigsByUser = gql`
-  query MyQuery {
-    users {
-      firstName
-      groupsUsers {
-        group {
-          name
-          gigs {
-            gigDate
-          }
-        }
+//Mutations
+export const AddGig = gql`
+  mutation AddGig(
+    $gigDate: String = ""
+    $gigImportantGuests: String = ""
+    $gigOccasion: String = ""
+    $gigStatus: String = ""
+    $gigTitle: String = ""
+    $groupId: uuid = ""
+  ) {
+    insert_gigs(
+      objects: {
+        gigDate: $gigDate
+        gigImportantGuests: $gigImportantGuests
+        gigOccasion: $gigOccasion
+        gigStatus: $gigStatus
+        gigTitle: $gigTitle
+        groupId: $groupId
+      }
+    ) {
+      returning {
+        id
+        gigDate
+        gigImportantGuests
+        gigOccasion
+        gigStatus
+        gigTitle
+        groupId
+      }
+    }
+  }
+`;
+
+export const LinkGigUser = gql`
+  mutation MyMutation2($gigId: uuid = "") {
+    insert_gigsUsers(objects: { gigId: $gigId }) {
+      returning {
+        id
       }
     }
   }

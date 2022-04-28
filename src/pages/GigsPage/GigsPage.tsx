@@ -1,20 +1,20 @@
 import './gigs-page.css';
 
 import { useQuery, useReactiveVar } from '@apollo/client';
-import { filterVar } from '../../constants/cache';
+import { groupIdVar } from '../../constants/cache';
 import { MyGigsByGroup } from '../../constants/queries';
 import { NavLink } from 'react-router-dom';
 import Loading from '../../components/Loading/Loading';
 
 export default function GigsPage() {
-  const groupId = useReactiveVar(filterVar);
+  const groupId = useReactiveVar(groupIdVar);
 
   const { loading, error, data } = useQuery(MyGigsByGroup, {
     variables: { groupId },
   });
 
-  //Logs
-  //   console.log('data :>> ', data.groups_by_pk);
+  //Logs;
+  // console.log('data :>> ', data.groups_by_pk);
 
   if (loading) {
     return <Loading />;
@@ -39,20 +39,24 @@ export default function GigsPage() {
           let borderColor: string;
 
           switch (gigStatus) {
-            case 'Confirmed': {
-              borderColor = '#5abd0f';
-              break;
-            }
-            case 'Offered': {
-              borderColor = '#fd7520';
-              break;
-            }
-            case 'Requested': {
+            case 'requested': {
               borderColor = '#fff700';
               break;
             }
-            case 'Denied': {
+            case 'offered': {
+              borderColor = '#fd7520';
+              break;
+            }
+            case 'confirmed': {
+              borderColor = '#5abd0f';
+              break;
+            }
+            case 'cancelled': {
               borderColor = '#f34213';
+              break;
+            }
+            case 'afterSale': {
+              borderColor = '#190e96';
               break;
             }
             default: {

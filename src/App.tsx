@@ -12,7 +12,6 @@ import {
 } from '@apollo/client';
 
 //Components
-import Test from './components/Test';
 import NavBar from './components/NavBar/NavBar';
 import Loading from './components/Loading/Loading';
 import NewGig from './components/NewGig /NewGig';
@@ -46,7 +45,7 @@ function App() {
         scope: 'read:current_user',
       });
 
-      // console.log('accessToken :>> ', accessToken);
+      console.log('accessToken :>> ', accessToken);
 
       setAccessToken(accessToken);
       return accessToken;
@@ -114,7 +113,6 @@ function App() {
     <ApolloProvider client={client}>
       <div className="App">
         <NavBar />
-        {/* <Test /> */}
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<GigsPage />} />

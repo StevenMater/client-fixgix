@@ -16,19 +16,19 @@ export default function GigsDetailsIsViewer({ gigId }: { gigId: string }) {
   }
 
   const {
-    amountOfSets,
-    dressCode,
-    extraDJ,
-    extraXL,
+    showAmountOfSets,
+    showDressCode,
+    showExtraDJ,
+    showExtraXL,
     gigDate,
     gigImportantGuests,
     gigOccasion,
     gigStatus,
     gigTitle,
     gigsUsers,
-    isDinner,
-    isParking,
-    payMembers,
+    gigIsDinner,
+    gigIsParking,
+    gigPayMembers,
     timeCheckInGroup,
     timeCheckInSoundEngineer,
     timeCheckOut,
@@ -52,18 +52,18 @@ export default function GigsDetailsIsViewer({ gigId }: { gigId: string }) {
           <p>Title: {gigTitle}</p>
           <p>Occasion: {gigOccasion}</p>
           <p>Important guests: {gigImportantGuests}</p>
-          <p>Parking: {isParking ? 'yes' : 'no'}</p>
-          <p>Dinner: {isDinner ? 'yes' : 'no'}</p>
-          <p>Pay: €{payMembers},-</p>
+          <p>Parking: {gigIsParking ? 'yes' : 'no'}</p>
+          <p>Dinner: {gigIsDinner ? 'yes' : 'no'}</p>
+          <p>Pay: €{gigPayMembers},-</p>
         </div>
         <div className="details-block rounded">
           <h4>
             <u>Show details</u>
           </h4>
-          <p>Dresscode: {dressCode}</p>
-          <p>Number of sets: {amountOfSets}</p>
-          <p>XL: {extraXL ? 'yes' : 'no'}</p>
-          <p>DJ: {extraDJ ? 'yes' : 'no'}</p>
+          <p>Dresscode: {showDressCode}</p>
+          <p>Number of sets: {showAmountOfSets}</p>
+          <p>XL: {showExtraXL ? 'yes' : 'no'}</p>
+          <p>DJ: {showExtraDJ ? 'yes' : 'no'}</p>
         </div>
         <div className="details-block rounded">
           <h4>

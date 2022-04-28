@@ -1,12 +1,14 @@
-import { useQuery, useReactiveVar } from '@apollo/client';
-import { getGigsByUser } from '../constants/queries';
+import { useQuery } from '@apollo/client';
+import { MyGigsByGroup } from '../constants/queries';
+import Loading from './Loading/Loading';
 
-export default function Test() {
-  // const test = useReactiveVar(filterVar);
-  const { loading, error, data } = useQuery(getGigsByUser);
+export default function Test({ groupId }: { groupId: string }) {
+  const { loading, error, data } = useQuery(MyGigsByGroup, {
+    variables: { groupId },
+  });
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {
@@ -14,8 +16,6 @@ export default function Test() {
     return <div>Error!</div>;
   }
 
-  //Logs
-  // console.log('test :>> ', test);
-  return <div>{data.users[0].firstName}</div>;
-  // return null;
+  console.log('data', data);
+  return data;
 }

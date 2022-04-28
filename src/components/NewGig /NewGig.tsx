@@ -1,6 +1,10 @@
 import './new-gig.css';
-
 import * as React from 'react';
+import * as Yup from 'yup';
+import { useMutation, useReactiveVar } from '@apollo/client';
+import { Form, Formik, useField } from 'formik';
+
+//MUI
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import AppBar from '@mui/material/AppBar';
@@ -10,11 +14,13 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import { newGigVar } from '../../constants/cache';
-import { useReactiveVar } from '@apollo/client';
-import * as Yup from 'yup';
-import { Form, Formik, useField } from 'formik';
-import { FormLabel, Input } from '@mui/material';
+import { FormLabel, Input, MenuItem, Select, InputLabel } from '@mui/material';
+
+//Cache
+import { groupIdVar, newGigVar } from '../../constants/cache';
+
+//Queries
+import { AddGig, LinkGigUser } from '../../constants/queries';
 
 interface MyTextInputProps {
   label: string;
@@ -26,8 +32,12 @@ interface MyTextInputProps {
 interface MySelectProps {
   label: string;
   name: string;
-  value: string;
+  children: any[];
 }
+
+// interface MyCheckboxProps {
+//   label;
+// }
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -41,35 +51,62 @@ const Transition = React.forwardRef(function Transition(
 const MyTextInput = (props: MyTextInputProps) => {
   const [field, meta] = useField(props);
   return (
-    <>
+    <div className="d-flex flex-column p-3 w-75">
       <FormLabel htmlFor={props.name}>{props.label}</FormLabel>
       <Input className="text-input" {...field} {...props} />
       {meta.touched && meta.error && (
-        <div className="error" color="red">
-          {meta.error}
-        </div>
+        <div className="text-danger">{meta.error}</div>
       )}
-    </>
-  );
-};
-
-const MySelect = ({ label, ...props }) => {
-  const [field, meta] = useField(props);
-  return (
-    <div>
-      <label htmlFor={props.id || props.name}>{label}</label>
-      <select {...field} {...props} />
-      {meta.touched && meta.error ? (
-        <div className="error">{meta.error}</div>
-      ) : null}
     </div>
   );
 };
 
+const MySelect = (props: MySelectProps) => {
+  const [field, meta] = useField(props);
+  return (
+    <div className="d-flex flex-column p-3 w-75">
+      <FormLabel htmlFor={props.name}>{props.label}</FormLabel>
+      <Select {...field} {...props} />
+      {meta.touched && meta.error && (
+        <div className="text-danger">{meta.error}</div>
+      )}
+    </div>
+  );
+};
+
+// const MyCheckbox = ({ children, ...props }) => {
+//   const [field, meta] = useField({ ...props, type: 'checkbox' });
+//   return (
+//     <div>
+//       <InputLabel className="checkbox-input">
+//         <Input type="checkbox" {...field} {...props} />
+//         {children}
+//       </InputLabel>
+//       {meta.touched && meta.error ? (
+//         <div className="error">{meta.error}</div>
+//       ) : null}
+//     </div>
+//   );
+// };
+
 export default function NewGig() {
+  const groupId = useReactiveVar(groupIdVar);
   const open = useReactiveVar(newGigVar);
 
   const close = () => newGigVar(false);
+
+  const [addGig, { data, loading, error }] = useMutation(AddGig);
+  const [linkGigUser] = useMutation(LinkGigUser);
+
+  //Logs
+  // console.log('data', data);
+  // console.log('loading', loading);
+  // console.log('error :>> ', error);
+  // console.log('groupId', groupId);
+
+  if (loading) return <div>'Submitting...'</div>;
+
+  if (error) return <div>`Submission error! ${error.message}`</div>;
 
   return (
     <div>
@@ -94,103 +131,135 @@ export default function NewGig() {
               New gig
             </Typography>
 
-            <Button autoFocus color="inherit" onClick={close}>
+            <Button autoFocus color="inherit">
               save
             </Button>
           </Toolbar>
         </AppBar>
         <Formik
           initialValues={{
-            amountOfSets: null,
-            dressCode: '',
-            extraDJ: false,
-            extraXL: false,
+            // amountOfSets: null,
+            // dressCode: '',
+            // extraDJ: false,
+            // extraXL: false,
             gigDate: '',
             gigImportantGuests: '',
             gigOccasion: '',
             gigStatus: '',
             gigTitle: '',
-            isDinner: false,
-            isParking: false,
-            payMembers: null,
-            timeCheckInGroup: '',
-            timeCheckInSoundEngineer: '',
-            timeCheckOut: '',
-            timeDinner: '',
-            timeReadyForShow: '',
-            timeShowEnd: '',
-            timeShowStart: '',
-            timeSoundCheck: '',
+            // isDinner: false,
+            // isParking: false,
+            // payMembers: null,
+            // timeCheckInGroup: '',
+            // timeCheckInSoundEngineer: '',
+            // timeCheckOut: '',
+            // timeDinner: '',
+            // timeReadyForShow: '',
+            // timeShowEnd: '',
+            // timeShowStart: '',
+            // timeSoundCheck: '',
           }}
           validationSchema={Yup.object({
-            amountOfSets: Yup.number()
-              .integer('Must be a integer')
-              .positive('Must be a positive number'),
-            dressCode: Yup.string(),
-            extraDJ: Yup.boolean(),
-            extraXL: Yup.boolean(),
+            // showAmountOfSets: Yup.number()
+            //   .integer('Must be a integer')
+            //   .positive('Must be a positive number'),
+            // gigDressCode: Yup.string(),
+            // showDJ: Yup.boolean(),
+            // showXL: Yup.boolean(),
             gigDate: Yup.string().required('Required'),
             gigImportantGuests: Yup.string(),
             gigOccasion: Yup.string(),
-            gigStatus: Yup.string().oneOf(
-              ['Requested', 'Offered', 'Confirmed', 'Cancelled', 'After sale'],
-              'Invalid status'
-            ),
+            gigStatus: Yup.string()
+              .oneOf(
+                ['requested', 'offered', 'confirmed', 'cancelled', 'afterSale'],
+                'Invalid status'
+              )
+              .required('Required'),
             gigTitle: Yup.string().required('Required'),
-            isDinner: Yup.boolean(),
-            isParking: Yup.boolean(),
-            payMembers: Yup.number().positive('Must be a positive number'),
-            timeCheckInGroup: Yup.string(),
-            timeCheckInSoundEngineer: Yup.string(),
-            timeCheckOut: Yup.string(),
-            timeDinner: Yup.string(),
-            timeReadyForShow: Yup.string(),
-            timeShowEnd: Yup.string(),
-            timeShowStart: Yup.string(),
-            timeSoundCheck: Yup.string(),
+            // gigIsDinner: Yup.boolean(),
+            // gigIsParking: Yup.boolean(),
+            // gigPayMembers: Yup.number().positive('Must be a positive number'),
+            // timeCheckInGroup: Yup.string(),
+            // timeCheckInSoundEngineer: Yup.string(),
+            // timeCheckOut: Yup.string(),
+            // timeDinner: Yup.string(),
+            // timeReadyForShow: Yup.string(),
+            // timeShowEnd: Yup.string(),
+            // timeShowStart: Yup.string(),
+            // timeSoundCheck: Yup.string(),
           })}
           onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
-            }, 400);
+            // console.log('values', values);
+
+            const {
+              gigDate,
+              gigTitle,
+              gigOccasion,
+              gigStatus,
+              gigImportantGuests,
+            } = values;
+
+            addGig({
+              variables: {
+                groupId,
+                gigDate,
+                gigTitle,
+                gigOccasion,
+                gigStatus,
+                gigImportantGuests,
+              },
+            });
+
+            const gigId = data.insert_gigs.returning[0].id;
+
+            console.log('gigId', gigId);
+
+            linkGigUser({ variables: { gigId } });
+
+            setSubmitting(false);
+            close();
           }}
         >
           <Form>
+            <MySelect label="Gig status" name="gigStatus">
+              <MenuItem value="requested">Requested</MenuItem>
+              <MenuItem value="offered">Offered</MenuItem>
+              <MenuItem value="confirmed">Confirmed</MenuItem>
+              <MenuItem value="cancelled">Cancelled</MenuItem>
+              <MenuItem value="afterSale">After sale</MenuItem>
+            </MySelect>
+
+            <h3 className="p-3">Common details</h3>
+
             <MyTextInput
-              label="Date"
-              name="gigDate"
+              label="Gig title"
+              name="gigTitle"
               type="text"
-              placeholder="The date of your gig"
+              placeholder="Name your gig"
             />
 
-            {/* <MyTextInput
-             label="Last Name"
-             name="lastName"
-             type="text"
-             placeholder="Doe"
-           />
- 
-           <MyTextInput
-             label="Email Address"
-             name="email"
-             type="email"
-             placeholder="jane@formik.com"
-           />
- 
-           <MySelect label="Job Type" name="jobType">
-             <option value="">Select a job type</option>
-             <option value="designer">Designer</option>
-             <option value="development">Developer</option>
-             <option value="product">Product Manager</option>
-             <option value="other">Other</option>
-           </MySelect>
- 
-           <MyCheckbox name="acceptedTerms">
-             I accept the terms and conditions
-        </MyCheckbox>
+            <MyTextInput
+              label="Gig date"
+              name="gigDate"
+              type="text"
+              placeholder="Date of your gig"
+            />
 
-              <button type="submit">Submit</button>*/}
+            <MyTextInput
+              label="Occasion"
+              name="gigOccasion"
+              type="text"
+              placeholder="What is the reason for the party?"
+            />
+
+            <MyTextInput
+              label="Important guests"
+              name="gigImportantGuests"
+              type="text"
+              placeholder="Who is the party for?"
+            />
+
+            <button type="submit">Submit</button>
           </Form>
         </Formik>
       </Dialog>
