@@ -1,5 +1,5 @@
 import './new-gig.css';
-import * as React from 'react';
+// import * as React from 'react';
 import * as Yup from 'yup';
 import { useMutation, useReactiveVar } from '@apollo/client';
 import { Form, Formik, useField } from 'formik';
@@ -20,7 +20,8 @@ import { FormLabel, Input, MenuItem, Select, InputLabel } from '@mui/material';
 import { groupIdVar, newGigVar } from '../../constants/cache';
 
 //Queries
-import { AddGig, LinkGigUser } from '../../constants/queries';
+import { AddGig, LinkGigUser, MyGigsByGroup } from '../../constants/queries';
+import { forwardRef, useEffect } from 'react';
 
 interface MyTextInputProps {
   label: string;
@@ -39,7 +40,7 @@ interface MySelectProps {
 //   label;
 // }
 
-const Transition = React.forwardRef(function Transition(
+const Transition = forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement;
   },
@@ -95,8 +96,25 @@ export default function NewGig() {
 
   const close = () => newGigVar(false);
 
-  const [addGig, { data, loading, error }] = useMutation(AddGig);
-  const [linkGigUser] = useMutation(LinkGigUser);
+  const [
+    addGig,
+    { data: dataAddGig, loading: loadingAddGig, error: errorAddGig },
+  ] = useMutation(AddGig);
+
+  const [
+    linkGigUser,
+    { loading: loadingLinkGigUser, error: errorLinkGigUser },
+  ] = useMutation(LinkGigUser, {
+    refetchQueries: [MyGigsByGroup],
+  });
+
+  useEffect(() => {
+    if (!loadingAddGig && dataAddGig) {
+      const gigId = dataAddGig.insert_gigs.returning[0].id;
+
+      linkGigUser({ variables: { gigId } }).then(() => close());
+    }
+  }, [loadingAddGig, dataAddGig]);
 
   //Logs
   // console.log('data', data);
@@ -104,9 +122,9 @@ export default function NewGig() {
   // console.log('error :>> ', error);
   // console.log('groupId', groupId);
 
-  if (loading) return <div>'Submitting...'</div>;
+  if (loadingAddGig || loadingLinkGigUser) return <div>'Submitting...'</div>;
 
-  if (error) return <div>`Submission error! ${error.message}`</div>;
+  if (errorAddGig || errorLinkGigUser) return <div>`Submission error!`</div>;
 
   return (
     <div>
@@ -189,7 +207,7 @@ export default function NewGig() {
             // timeSoundCheck: Yup.string(),
           })}
           onSubmit={(values, { setSubmitting }) => {
-            // console.log('values', values);
+            console.log('values', values);
 
             const {
               gigDate,
@@ -199,25 +217,18 @@ export default function NewGig() {
               gigImportantGuests,
             } = values;
 
-            addGig({
-              variables: {
-                groupId,
-                gigDate,
-                gigTitle,
-                gigOccasion,
-                gigStatus,
-                gigImportantGuests,
-              },
-            });
-
-            const gigId = data.insert_gigs.returning[0].id;
-
-            console.log('gigId', gigId);
-
-            linkGigUser({ variables: { gigId } });
+            // addGig({
+            //   variables: {
+            //     groupId,
+            //     gigDate,
+            //     gigTitle,
+            //     gigOccasion,
+            //     gigStatus,
+            //     gigImportantGuests,
+            //   },
+            // });
 
             setSubmitting(false);
-            close();
           }}
         >
           <Form>

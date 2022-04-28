@@ -32,7 +32,7 @@ export default function GigsPage() {
       <div>
         <h3>{name}</h3>
       </div>
-      <div className=" d-flex">
+      <div className=" d-flex flex-wrap">
         {gigs.map((gig: any) => {
           const { id, gigDate, gigTitle, gigStatus } = gig;
 

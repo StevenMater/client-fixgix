@@ -45,7 +45,7 @@ function App() {
         scope: 'read:current_user',
       });
 
-      console.log('accessToken :>> ', accessToken);
+      // console.log('accessToken :>> ', accessToken);
 
       setAccessToken(accessToken);
       return accessToken;
