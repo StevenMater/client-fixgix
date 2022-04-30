@@ -2,7 +2,7 @@ import './nav-bar.css';
 
 import { useQuery, useReactiveVar } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
   Button,
   FormControl,
@@ -23,15 +23,17 @@ import LogoutButton from '../LogoutButton';
 import { groupIdVar, isEditorVar, newGigVar } from '../../constants/cache';
 
 //Queries
-import { MyGroups } from '../../constants/queries';
+import { GET_GROUPS } from '../../constants/queries';
 
 export default function NavBar() {
+  const navigate = useNavigate();
+
   const { user, isAuthenticated } = useAuth0();
 
   const filter = useReactiveVar(groupIdVar);
   const isEditor = useReactiveVar(isEditorVar);
 
-  const { loading, error, data } = useQuery(MyGroups);
+  const { loading, error, data } = useQuery(GET_GROUPS);
 
   const userControls: any = isAuthenticated ? (
     <LogoutButton />
@@ -51,6 +53,7 @@ export default function NavBar() {
   // console.log('data :>> ', data.groups);
   // console.log('user :>> ', user);
   // console.log('isEditor :>> ', isEditor);
+  // console.log('user.picture', user?.picture);
 
   if (!user || loading) {
     return <div className="nav-bar-loading"></div>;
@@ -61,8 +64,15 @@ export default function NavBar() {
     return <div>Error!</div>;
   }
 
+  const changeGroup = (groupId: string) => {
+    groupIdVar(groupId);
+
+    // navigate('/');
+  };
+
   return (
-    <div className="nav-bar-container d-flex flex-row align-items-center justify-content-between">
+    <div className="nav-bar-container d-flex flex-row align-items-center justify-content-around">
+      {/* <div className="d-flex flex-row align-items-center justify-content-between w-75"> */}
       <NavLink to="/" className="navlink">
         <h3>FixGix</h3>
       </NavLink>
@@ -72,7 +82,7 @@ export default function NavBar() {
         <Select
           value={filter}
           label="Group"
-          onChange={(event) => groupIdVar(event.target.value)}
+          onChange={(event) => changeGroup(event.target.value)}
         >
           {isAuthenticated &&
             data.groups.map((group: any) => {
@@ -110,8 +120,10 @@ export default function NavBar() {
       </FormGroup>
 
       {userControls}
-
-      <img src={user?.picture} alt={user?.name} className="profile-picture" />
+      {/* </div> */}
+      {user && (
+        <img src={user?.picture} alt={user?.name} className="profile-picture" />
+      )}
     </div>
   );
 }

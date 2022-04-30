@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 //Queries
-export const MyGroups = gql`
-  query MyGroups {
+export const GET_GROUPS = gql`
+  query GET_GROUPS {
     groups {
       id
       name
@@ -10,27 +10,37 @@ export const MyGroups = gql`
   }
 `;
 
-export const MyGigsByGroup = gql`
-  query MyQuery($groupId: uuid = "") {
+export const GET_GIGS_BY_GROUP = gql`
+  query GET_GIGS_BY_GROUP($groupId: uuid = "") {
     groups_by_pk(id: $groupId) {
       id
       name
       pictureUrl
-      gigs {
+      gigs(order_by: { gigDate: asc }) {
         id
-        gigDate
-        gigTitle
         gigStatus
+        gigTitle
+        gigDate
+      }
+      groupsUsers {
+        user {
+          id
+          email
+          username
+          firstName
+          lastName
+          picture
+        }
       }
     }
   }
 `;
 
-export const MyGigById = gql`
-  query MyGigById($gigId: uuid = "") {
+export const GET_GIG_BY_ID = gql`
+  query GET_GIG_BY_ID($gigId: uuid = "") {
     gigs_by_pk(id: $gigId) {
       showAmountOfSets
-      gigDressCode
+      showDressCode
       showExtraDJ
       showExtraXL
       gigDate
@@ -65,40 +75,66 @@ export const MyGigById = gql`
 `;
 
 //Mutations
-export const AddGig = gql`
-  mutation AddGig(
-    $gigDate: String = ""
-    $gigImportantGuests: String = ""
-    $gigOccasion: String = ""
+export const ADD_GIG = gql`
+  mutation ADD_GIG(
+    $groupId: uuid = ""
     $gigStatus: String = ""
     $gigTitle: String = ""
-    $groupId: uuid = ""
+    $gigDate: String = ""
+    $gigOccasion: String = ""
+    $gigImportantGuests: String = ""
+    $gigIsParking: Boolean = false
+    $gigIsDinner: Boolean = false
+    $gigPayMembers: Int = 0
+    $showDressCode: String = ""
+    $showAmountOfSets: Int = 0
+    $showExtraXL: Boolean = false
+    $showExtraDJ: Boolean = false
+    $timeCheckInSoundEngineer: String = ""
+    $timeCheckInGroup: String = ""
+    $timeSoundCheck: String = ""
+    $timeReadyForShow: String = ""
+    $timeDinner: String = ""
+    $timeShowStart: String = ""
+    $timeShowEnd: String = ""
+    $timeCheckOut: String = ""
+    $gigNotes: String = ""
   ) {
     insert_gigs(
       objects: {
-        gigDate: $gigDate
-        gigImportantGuests: $gigImportantGuests
-        gigOccasion: $gigOccasion
+        groupId: $groupId
         gigStatus: $gigStatus
         gigTitle: $gigTitle
-        groupId: $groupId
+        gigDate: $gigDate
+        gigOccasion: $gigOccasion
+        gigImportantGuests: $gigImportantGuests
+        gigIsParking: $gigIsParking
+        gigIsDinner: $gigIsDinner
+        gigPayMembers: $gigPayMembers
+        showDressCode: $showDressCode
+        showAmountOfSets: $showAmountOfSets
+        showExtraXL: $showExtraXL
+        showExtraDJ: $showExtraDJ
+        timeCheckInSoundEngineer: $timeCheckInSoundEngineer
+        timeCheckInGroup: $timeCheckInGroup
+        timeSoundCheck: $timeSoundCheck
+        timeReadyForShow: $timeReadyForShow
+        timeDinner: $timeDinner
+        timeShowStart: $timeShowStart
+        timeShowEnd: $timeShowEnd
+        timeCheckOut: $timeCheckOut
+        gigNotes: $gigNotes
       }
     ) {
       returning {
         id
-        gigDate
-        gigImportantGuests
-        gigOccasion
-        gigStatus
-        gigTitle
-        groupId
       }
     }
   }
 `;
 
-export const LinkGigUser = gql`
-  mutation MyMutation2($gigId: uuid = "") {
+export const LINK_GIG_USER = gql`
+  mutation LINK_GIG_USER($gigId: uuid = "") {
     insert_gigsUsers(objects: { gigId: $gigId }) {
       returning {
         id
@@ -106,3 +142,7 @@ export const LinkGigUser = gql`
     }
   }
 `;
+
+// $gigNotes: String = ""
+
+// gigNotes: $gigNotes

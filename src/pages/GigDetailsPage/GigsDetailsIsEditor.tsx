@@ -1,9 +1,9 @@
 import { useQuery } from '@apollo/client';
-import { MyGigById } from '../../constants/queries';
+import { GET_GIG_BY_ID } from '../../constants/queries';
 import Loading from '../../components/Loading/Loading';
 
 export default function GigsDetailsPageIsEditor({ gigId }: { gigId: string }) {
-  const { loading, error, data } = useQuery(MyGigById, {
+  const { loading, error, data } = useQuery(GET_GIG_BY_ID, {
     variables: { gigId },
   });
 
@@ -12,37 +12,37 @@ export default function GigsDetailsPageIsEditor({ gigId }: { gigId: string }) {
   }
 
   if (error) {
-    console.error(error);
+    console.error(error.message);
     return <div>Error!</div>;
   }
 
   const {
-    showAmountOfSets,
-    gigDressCode,
-    showExtraDJ,
-    showExtraXL,
-    gigDate,
-    gigImportantGuests,
-    gigOccasion,
-    gigStatus,
+    // gigStatus,
     gigTitle,
-    gigsUsers,
-    gigIsDinner,
+    gigDate,
+    gigOccasion,
+    gigImportantGuests,
     gigIsParking,
+    gigIsDinner,
     gigPayMembers,
-    timeCheckInGroup,
+    showDressCode,
+    showAmountOfSets,
+    showExtraXL,
+    showExtraDJ,
     timeCheckInSoundEngineer,
-    timeCheckOut,
-    timeDinner,
-    timeReadyForShow,
-    timeShowEnd,
-    timeShowStart,
+    timeCheckInGroup,
     timeSoundCheck,
-    updated_at,
+    timeReadyForShow,
+    timeDinner,
+    timeShowStart,
+    timeShowEnd,
+    timeCheckOut,
+    // gigsUsers,
+    // updated_at,
   } = data.gigs_by_pk;
 
   //Logs
-  console.log('error', error);
+  // console.log('error', error);
 
   return (
     <div className="p-3 d-flex flex-wrap">
@@ -62,7 +62,7 @@ export default function GigsDetailsPageIsEditor({ gigId }: { gigId: string }) {
         <h4>
           <u>Show details</u>
         </h4>
-        <p>Dresscode: {gigDressCode}</p>
+        <p>Dresscode: {showDressCode}</p>
         <p>Number of sets: {showAmountOfSets}</p>
         <p>XL: {showExtraXL ? 'yes' : 'no'}</p>
         <p>DJ: {showExtraDJ ? 'yes' : 'no'}</p>

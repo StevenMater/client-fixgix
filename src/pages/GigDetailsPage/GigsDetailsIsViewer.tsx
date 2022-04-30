@@ -1,13 +1,14 @@
 import { useQuery } from '@apollo/client';
-import { MyGigById } from '../../constants/queries';
+import Loading from '../../components/Loading/Loading';
+import { GET_GIG_BY_ID } from '../../constants/queries';
 
 export default function GigsDetailsIsViewer({ gigId }: { gigId: string }) {
-  const { loading, error, data } = useQuery(MyGigById, {
+  const { loading, error, data } = useQuery(GET_GIG_BY_ID, {
     variables: { gigId },
   });
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (error) {
@@ -16,28 +17,28 @@ export default function GigsDetailsIsViewer({ gigId }: { gigId: string }) {
   }
 
   const {
-    showAmountOfSets,
-    showDressCode,
-    showExtraDJ,
-    showExtraXL,
-    gigDate,
-    gigImportantGuests,
-    gigOccasion,
     gigStatus,
     gigTitle,
-    gigsUsers,
-    gigIsDinner,
+    gigDate,
+    gigOccasion,
+    gigImportantGuests,
     gigIsParking,
+    gigIsDinner,
     gigPayMembers,
-    timeCheckInGroup,
+    showDressCode,
+    showAmountOfSets,
+    showExtraXL,
+    showExtraDJ,
     timeCheckInSoundEngineer,
-    timeCheckOut,
-    timeDinner,
-    timeReadyForShow,
-    timeShowEnd,
-    timeShowStart,
+    timeCheckInGroup,
     timeSoundCheck,
-    updated_at,
+    timeReadyForShow,
+    timeDinner,
+    timeShowStart,
+    timeShowEnd,
+    timeCheckOut,
+    // gigsUsers,
+    // updated_at,
   } = data.gigs_by_pk;
 
   return (

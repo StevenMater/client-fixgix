@@ -1,22 +1,28 @@
 import './gigs-page.css';
 
-import { useQuery, useReactiveVar } from '@apollo/client';
+import { useLazyQuery, useReactiveVar } from '@apollo/client';
 import { groupIdVar } from '../../constants/cache';
-import { MyGigsByGroup } from '../../constants/queries';
+import { GET_GIGS_BY_GROUP } from '../../constants/queries';
 import { NavLink } from 'react-router-dom';
 import Loading from '../../components/Loading/Loading';
+import { useEffect } from 'react';
+import { Avatar } from '@mui/material';
 
 export default function GigsPage() {
   const groupId = useReactiveVar(groupIdVar);
 
-  const { loading, error, data } = useQuery(MyGigsByGroup, {
-    variables: { groupId },
-  });
+  const [getGigsByGroup, { loading, error, data }] =
+    useLazyQuery(GET_GIGS_BY_GROUP);
 
-  //Logs;
-  // console.log('data :>> ', data.groups_by_pk);
+  useEffect(() => {
+    if (groupId) {
+      getGigsByGroup({
+        variables: { groupId },
+      });
+    }
+  }, [groupId]);
 
-  if (loading) {
+  if (loading || !data) {
     return <Loading />;
   }
 
@@ -25,14 +31,34 @@ export default function GigsPage() {
     return <div>Error!</div>;
   }
 
-  const { name, gigs } = data.groups_by_pk;
+  const { name, gigs, groupsUsers } = data.groups_by_pk;
+
+  //Logs;
+  // console.log('data :>> ', data);
+  // console.log('groupId :>> ', groupId);
+  // console.log('groupsUsers', groupsUsers[0].user);
 
   return (
-    <div className="gigs-container d-flex flex-column p-3 mh-100">
+    <div className="gigs-container d-flex flex-column p-3 align-items-center">
       <div>
-        <h3>{name}</h3>
+        <h2>{name}</h2>
       </div>
-      <div className=" d-flex flex-wrap">
+      <div>
+        <h4>Members:</h4>
+        {groupsUsers.map((user: any) => {
+          const { id, picture, firstName, lastName } = user.user;
+
+          return (
+            <Avatar
+              key={id}
+              alt={`${firstName} ${lastName}`}
+              src={picture}
+              sx={{ width: 60, height: 60 }}
+            />
+          );
+        })}
+      </div>
+      <div className=" d-flex flex-wrap justify-content-around mt-5">
         {gigs.map((gig: any) => {
           const { id, gigDate, gigTitle, gigStatus } = gig;
 
@@ -40,7 +66,7 @@ export default function GigsPage() {
 
           switch (gigStatus) {
             case 'requested': {
-              borderColor = '#fff700';
+              borderColor = '#eee83C';
               break;
             }
             case 'offered': {
@@ -48,15 +74,15 @@ export default function GigsPage() {
               break;
             }
             case 'confirmed': {
-              borderColor = '#5abd0f';
+              borderColor = '#3a780b';
               break;
             }
             case 'cancelled': {
-              borderColor = '#f34213';
+              borderColor = '#f21313';
               break;
             }
             case 'afterSale': {
-              borderColor = '#190e96';
+              borderColor = '#247ba0';
               break;
             }
             default: {
@@ -68,12 +94,20 @@ export default function GigsPage() {
             <NavLink
               to={`/gigs/${id}`}
               key={id}
-              className="navlink card-container p-5 m-5 rounded"
-              style={{ borderColor: borderColor }}
+              className="card radialGradient"
             >
-              <p>Date: {gigDate}</p>
-              <p>Title: {gigTitle}</p>
-              <p>Status: {gigStatus}</p>
+              <div
+                className="card-banner"
+                style={{ backgroundColor: borderColor }}
+              ></div>
+              <div>
+                <h3 className="card-date">
+                  <span>{gigDate}</span>
+                </h3>
+                <h4 className="card-title">
+                  <span>{gigTitle}</span>
+                </h4>
+              </div>
             </NavLink>
           );
         })}
