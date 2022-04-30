@@ -9,6 +9,8 @@ export const newGigVar = makeVar(false);
 
 export const openGigVar = makeVar(false);
 
+export const openGigIdVar = makeVar('');
+
 //Date
 export const today = new Date();
 

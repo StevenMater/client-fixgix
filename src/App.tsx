@@ -116,7 +116,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<GigsPage />} />
-          <Route path="/gigs/:gigId" element={<GigDetailsPage />} />
+          {/* <Route path="/gigs/:gigId" element={<GigDetailsPage />} /> */}
         </Routes>
         {newGig && <NewGig />}
       </div>

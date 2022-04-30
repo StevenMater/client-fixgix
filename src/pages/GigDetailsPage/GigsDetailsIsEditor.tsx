@@ -2,20 +2,7 @@ import { useQuery } from '@apollo/client';
 import { GET_GIG_BY_ID } from '../../constants/queries';
 import Loading from '../../components/Loading/Loading';
 
-export default function GigsDetailsPageIsEditor({ gigId }: { gigId: string }) {
-  const { loading, error, data } = useQuery(GET_GIG_BY_ID, {
-    variables: { gigId },
-  });
-
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (error) {
-    console.error(error.message);
-    return <div>Error!</div>;
-  }
-
+export default function GigsDetailsIsEditor({ data }: { data: any }) {
   const {
     // gigStatus,
     gigTitle,
@@ -45,7 +32,7 @@ export default function GigsDetailsPageIsEditor({ gigId }: { gigId: string }) {
   // console.log('error', error);
 
   return (
-    <div className="p-3 d-flex flex-wrap">
+    <div className="p-3 d-flex flex-column">
       <div className="details-block rounded">
         <h4>
           <u>Common details</u>
