@@ -3,15 +3,15 @@ import './gigs-page.css';
 import { useLazyQuery, useReactiveVar } from '@apollo/client';
 import { groupIdVar, openGigIdVar, openGigVar } from '../../constants/cache';
 import { GET_GIGS_BY_GROUP } from '../../constants/queries';
-import { NavLink } from 'react-router-dom';
 import Loading from '../../components/Loading/Loading';
 import { useEffect } from 'react';
 import { Avatar } from '@mui/material';
 import GigDetailsPage from '../GigDetailsPage/GigDetailsPage';
+import { statusColorPicker } from '../../constants/functions';
 
 export default function GigsPage() {
   const groupId = useReactiveVar(groupIdVar);
-  const openGigId = useReactiveVar(openGigIdVar);
+
   const openGig = useReactiveVar(openGigVar);
 
   const [getGigsByGroup, { loading, error, data }] =
@@ -73,40 +73,7 @@ export default function GigsPage() {
         {gigs.map((gig: any) => {
           const { id, gigDate, gigTitle, gigStatus } = gig;
 
-          let borderColor: string;
-
-          switch (gigStatus) {
-            case 'requested': {
-              borderColor = '#eee83C';
-              break;
-            }
-            case 'offered': {
-              borderColor = '#fd7520';
-              break;
-            }
-            case 'confirmed': {
-              borderColor = '#3a780b';
-              break;
-            }
-            case 'cancelled': {
-              borderColor = '#f21313';
-              break;
-            }
-            case 'afterSale': {
-              borderColor = '#247ba0';
-              break;
-            }
-            default: {
-              borderColor = 'black';
-            }
-          }
-
           return (
-            // <NavLink
-            //   to={`/gigs/${id}`}
-            //   key={id}
-            //   className="card radialGradient"
-            // >
             <div
               onClick={() => openGigCard(id)}
               key={id}
@@ -114,7 +81,7 @@ export default function GigsPage() {
             >
               <div
                 className="card-banner"
-                style={{ backgroundColor: borderColor }}
+                style={{ backgroundColor: statusColorPicker(gigStatus) }}
               ></div>
               <div>
                 <h3 className="card-date">
@@ -125,7 +92,6 @@ export default function GigsPage() {
                 </h4>
               </div>
             </div>
-            // </NavLink>
           );
         })}
       </div>

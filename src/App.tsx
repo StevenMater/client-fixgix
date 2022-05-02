@@ -1,7 +1,7 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 import {
   ApolloClient,
@@ -18,22 +18,24 @@ import NewGig from './components/NewGig /NewGig';
 
 //Pages
 import GigsPage from './pages/GigsPage/GigsPage';
-import GigDetailsPage from './pages/GigDetailsPage/GigDetailsPage';
 import LoginPage from './pages/LoginPage/LoginPage';
 
 //Cache
-import { isEditorVar, newGigVar } from './constants/cache';
+import { isEditorVar, newGigVar, userIdVar } from './constants/cache';
 
 //Env constants
 const graphqlUri: string = process.env.REACT_APP_GRAPHQL_URI as string;
 const domain: string = process.env.REACT_APP_AUTH0_DOMAIN as string;
+const audience: string = process.env.REACT_APP_AUTH0_AUDIENCE as string;
 
 function App() {
+  const navigate = useNavigate();
+
   const { user, isAuthenticated, isLoading, getAccessTokenSilently } =
     useAuth0();
 
-  const [accessToken, setAccessToken] = useState('');
-  const [userMetadata, setUserMetadata] = useState(null);
+  // const [accessToken, setAccessToken] = useState('');
+  // const [userMetadata, setUserMetadata] = useState(null);
   const [client, setClient] = useState<any | undefined>(undefined);
 
   const newGig = useReactiveVar(newGigVar);
@@ -41,38 +43,41 @@ function App() {
   const getAccessToken = async () => {
     try {
       const accessToken: any = await getAccessTokenSilently({
-        audience: `https://${domain}/api/v2/`,
+        // audience: `https://${domain}/api/v2/`,
+        audience: audience,
         scope: 'read:current_user',
       });
 
       // console.log('accessToken :>> ', accessToken);
 
-      setAccessToken(accessToken);
+      // setAccessToken(accessToken);
+
       return accessToken;
     } catch (error: any) {
       console.log(error.message);
     }
   };
 
-  const getUserMetadata = async () => {
-    try {
-      const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user?.sub}`;
+  // const getUserMetadata = async () => {
+  //   try {
+  //     // const userDetailsByIdUrl = `https://${domain}/api/v2/users/${user?.sub}`;
+  //     const userDetailsByIdUrl = `${audience}users/${user?.sub}`;
 
-      const metadataResponse = await fetch(userDetailsByIdUrl, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+  //     const metadataResponse = await fetch(userDetailsByIdUrl, {
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //     });
 
-      const { user_metadata } = await metadataResponse.json();
+  //     const { user_metadata } = await metadataResponse.json();
 
-      setUserMetadata(user_metadata);
+  //     setUserMetadata(user_metadata);
 
-      // userMetadata.role === 'editor' ? isEditor(true) : isEditor(false);
-    } catch (e: any) {
-      console.log(e.message);
-    }
-  };
+  //     // userMetadata.role === 'editor' ? isEditor(true) : isEditor(false);
+  //   } catch (e: any) {
+  //     console.log(e.message);
+  //   }
+  // };
 
   const createApolloClient = (accessToken: string) => {
     return new ApolloClient({
@@ -87,6 +92,10 @@ function App() {
   };
 
   useEffect(() => {
+    // if (!isAuthenticated) {
+    //   navigate('/login');
+    // }
+
     getAccessToken()
       .then((token: string) => createApolloClient(token))
       .then((client: any) => setClient(client))
@@ -94,12 +103,12 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (accessToken) {
-      getUserMetadata();
+    if (user) {
+      userIdVar(user.sub);
     }
-  }, [accessToken]);
+  }, [user]);
 
-  if (client === undefined) return <Loading />;
+  if (isLoading || client === undefined) return <Loading />;
 
   //Logs
   // console.log('client :>> ', client);
@@ -116,7 +125,6 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<GigsPage />} />
-          {/* <Route path="/gigs/:gigId" element={<GigDetailsPage />} /> */}
         </Routes>
         {newGig && <NewGig />}
       </div>

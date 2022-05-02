@@ -1,11 +1,15 @@
 import { gql } from '@apollo/client';
 
 //Queries
-export const GET_GROUPS = gql`
-  query GET_GROUPS {
-    groups {
-      id
-      name
+export const GET_GROUPS_BY_ID = gql`
+  query ($userId: String = "") {
+    users_by_pk(id: $userId) {
+      groupsUsers {
+        group {
+          id
+          name
+        }
+      }
     }
   }
 `;

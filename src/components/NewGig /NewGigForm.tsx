@@ -1,20 +1,11 @@
 import './new-gig.css';
 
-import { Form, Formik, useField } from 'formik';
+import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { useEffect } from 'react';
 import { useMutation, useReactiveVar } from '@apollo/client';
 
-import {
-  Box,
-  Button,
-  FormLabel,
-  Input,
-  MenuItem,
-  Select,
-  Switch,
-  TextField,
-} from '@mui/material';
+import { Button, MenuItem } from '@mui/material';
 
 //Queries
 import { date, groupIdVar } from '../../constants/cache';
@@ -26,99 +17,9 @@ import {
 
 //Components
 import Loading from '../Loading/Loading';
-import { useNavigate } from 'react-router-dom';
-
-interface MyTextInputProps {
-  label: string;
-  name: string;
-  type: string;
-  placeholder: string;
-}
-
-const MyTextInput = (props: MyTextInputProps) => {
-  const [field, meta] = useField(props);
-
-  return (
-    <div className="d-flex flex-column my-2">
-      <FormLabel htmlFor={props.name}>{props.label}</FormLabel>
-      <Input {...field} {...props} />
-      {meta.touched && meta.error && (
-        <div className="text-danger">{meta.error}</div>
-      )}
-    </div>
-  );
-};
-
-interface MySelectProps {
-  label: string;
-  name: string;
-  children: any[];
-}
-
-const MySelect = (props: MySelectProps) => {
-  const [field, meta] = useField(props);
-
-  return (
-    <div className="d-flex flex-column my-2">
-      <FormLabel htmlFor={props.name}>{props.label}</FormLabel>
-      <Select {...field} {...props} />
-      {meta.touched && meta.error && (
-        <div className="text-danger">{meta.error}</div>
-      )}
-    </div>
-  );
-};
-
-interface MyCheckboxProps {
-  label: string;
-  name: string;
-}
-
-const MyCheckbox = (props: MyCheckboxProps) => {
-  const [field, meta] = useField(props);
-
-  return (
-    <div className="my-1">
-      <FormLabel htmlFor={props.name}>
-        <Switch {...field} {...props} />
-        {props.label}
-      </FormLabel>
-
-      {meta.touched && meta.error && <div className="error">{meta.error}</div>}
-    </div>
-  );
-};
-
-interface MyTextFieldProps {
-  label: string;
-  name: string;
-  type: string;
-}
-
-const MyTextField = (props: MyTextFieldProps) => {
-  const [field] = useField(props);
-
-  return (
-    <div className="w-100">
-      <FormLabel htmlFor={props.name} />
-      <TextField
-        {...field}
-        {...props}
-        label={props.label}
-        multiline
-        rows={32}
-        // id="outlined-basic"
-        variant="outlined"
-        className="mt-3 position-fixed "
-      />
-    </div>
-    // </FormLabel>
-  );
-};
+import { MyCheckbox, MySelect, MyTextField, MyTextInput } from '../Formik';
 
 export default function NewGigForm({ close }: { close: any }) {
-  const navigate = useNavigate();
-
   const groupId = useReactiveVar(groupIdVar);
 
   const [
@@ -137,9 +38,7 @@ export default function NewGigForm({ close }: { close: any }) {
     if (!loadingAddGig && dataAddGig) {
       const gigId = dataAddGig.insert_gigs.returning[0].id;
 
-      linkGigUser({ variables: { gigId } })
-        // .then(() => navigate('/'))
-        .then(() => close());
+      linkGigUser({ variables: { gigId } }).then(() => close());
     }
   }, [loadingAddGig, dataAddGig]);
 
@@ -208,7 +107,7 @@ export default function NewGigForm({ close }: { close: any }) {
         gigNotes: Yup.string(),
       })}
       onSubmit={(values) => {
-        console.log('values', values);
+        // console.log('values', values);
 
         const {
           gigStatus,
@@ -262,7 +161,7 @@ export default function NewGigForm({ close }: { close: any }) {
         });
       }}
     >
-      <Form className="px-5">
+      <Form className="px-3">
         <div className="row">
           <div className="col-12 col-md-10">
             <MySelect label="Gig status" name="gigStatus">
@@ -273,7 +172,7 @@ export default function NewGigForm({ close }: { close: any }) {
               <MenuItem value="afterSale">After sale</MenuItem>
             </MySelect>
 
-            <h4 className="p-3">Common details</h4>
+            <h4 className="pt-3">Common details</h4>
 
             <MyTextInput
               label="Title"
@@ -303,9 +202,17 @@ export default function NewGigForm({ close }: { close: any }) {
               placeholder="Who is the gig for?"
             />
 
-            <MyCheckbox label="Parking available" name="gigIsParking" />
+            <MyCheckbox
+              label="Parking available"
+              name="gigIsParking"
+              defaultChecked={false}
+            />
 
-            <MyCheckbox label="Dinner provided" name="gigIsDinner" />
+            <MyCheckbox
+              label="Dinner provided"
+              name="gigIsDinner"
+              defaultChecked={false}
+            />
 
             <MyTextInput
               label="Pay"
@@ -314,7 +221,7 @@ export default function NewGigForm({ close }: { close: any }) {
               placeholder="How much do members get paid?"
             />
 
-            <h4 className="p-3">Show details</h4>
+            <h4 className="pt-3">Show details</h4>
 
             <MyTextInput
               label="Dresscode"
@@ -330,11 +237,19 @@ export default function NewGigForm({ close }: { close: any }) {
               placeholder="How many sets will you play?"
             />
 
-            <MyCheckbox label="Additional - XL" name="showExtraXL" />
+            <MyCheckbox
+              label="Additional - XL"
+              name="showExtraXL"
+              defaultChecked={false}
+            />
 
-            <MyCheckbox label="Additional - DJ" name="showExtraDJ" />
+            <MyCheckbox
+              label="Additional - DJ"
+              name="showExtraDJ"
+              defaultChecked={false}
+            />
 
-            <h4 className="p-3">Schedule details</h4>
+            <h4 className="pt-3">Schedule</h4>
 
             <MyTextInput
               label="Check in sound engineer"

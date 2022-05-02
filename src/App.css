@@ -1,10 +1,9 @@
 :root {
-  /* --background-color: #b9d6f2; */
   --background-color: #ffffff;
   --background-secondary: #247ba0;
-  --alt-color: #b9d6f2;
+  --decoration-color: #b9d6f2;
   --text-color: #202a25;
-  --decoration-color: #5fdd9d;
+  --alt-color: #5fdd9d;
 }
 
 .App {

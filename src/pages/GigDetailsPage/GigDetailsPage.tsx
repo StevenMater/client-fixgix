@@ -14,6 +14,7 @@ import Loading from '../../components/Loading/Loading';
 import { GET_GIG_BY_ID } from '../../constants/queries';
 import GigsDetailsIsViewer from './GigsDetailsIsViewer';
 import GigsDetailsIsEditor from './GigsDetailsIsEditor';
+import { statusColorPicker } from '../../constants/functions';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -27,14 +28,18 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 export interface DialogTitleProps {
   id: string;
   children?: React.ReactNode;
+  backgroundColor: string;
   onClose: () => void;
 }
 
 const BootstrapDialogTitle = (props: DialogTitleProps) => {
-  const { children, onClose, ...other } = props;
+  const { children, onClose, backgroundColor, ...other } = props;
 
   return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+    <DialogTitle
+      sx={{ m: 0, p: 2, backgroundColor: backgroundColor }}
+      {...other}
+    >
       {children}
       {onClose ? (
         <IconButton
@@ -76,6 +81,8 @@ export default function CustomizedDialogs() {
     return <div>Error!</div>;
   }
 
+  const { gigDate, gigTitle, gigStatus } = data.gigs_by_pk;
+
   //Logs
   console.log('data', data);
 
@@ -91,8 +98,9 @@ export default function CustomizedDialogs() {
         <BootstrapDialogTitle
           id="customized-dialog-title"
           onClose={handleClose}
+          backgroundColor={statusColorPicker(gigStatus)}
         >
-          Modal title
+          {gigDate} - {gigTitle}
         </BootstrapDialogTitle>
 
         <DialogContent dividers>
