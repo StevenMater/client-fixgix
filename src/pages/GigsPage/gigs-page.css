@@ -14,6 +14,8 @@
   transition: all 0.2s;
   text-decoration: none;
   text-align: left;
+  background-color: var(--secondary-background-color);
+  color: var(--text-color);
 }
 
 .card:hover {
@@ -28,9 +30,4 @@
 .card-date {
   grid-row: 3/4;
   font-weight: 400;
-  color: var(--text-color);
-}
-
-.card-title {
-  color: var(--background-secondary);
 }
