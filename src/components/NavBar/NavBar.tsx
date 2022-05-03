@@ -71,7 +71,7 @@ export default function NavBar() {
 
   //Logs
   // console.log('filter :>> ', filter);
-  console.log('data :>> ', data);
+  // console.log('data :>> ', data);
   // console.log('user :>> ', user);
   // console.log('isEditor :>> ', isEditor);
   // console.log('user.picture', user?.picture);
@@ -116,11 +116,7 @@ export default function NavBar() {
       </FormControl>
 
       {isEditor && (
-        <Button
-          variant="contained"
-          onClick={() => newGigVar(!newGigVar())}
-          sx={{ backgroundColor: decorationColor }}
-        >
+        <Button variant="contained" onClick={() => newGigVar(!newGigVar())}>
           New gig
         </Button>
       )}

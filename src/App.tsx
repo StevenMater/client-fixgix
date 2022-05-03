@@ -22,6 +22,8 @@ import LoginPage from './pages/LoginPage/LoginPage';
 
 //Cache
 import { isEditorVar, newGigVar, userIdVar } from './constants/cache';
+import { ThemeProvider } from '@mui/material';
+import { theme } from './constants/colors';
 
 //Env constants
 const graphqlUri: string = process.env.REACT_APP_GRAPHQL_URI as string;
@@ -120,14 +122,16 @@ function App() {
 
   return (
     <ApolloProvider client={client}>
-      <div className="App">
-        <NavBar />
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<GigsPage />} />
-        </Routes>
-        {newGig && <NewGig />}
-      </div>
+      <ThemeProvider theme={theme}>
+        <div className="App">
+          <NavBar />
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/" element={<GigsPage />} />
+          </Routes>
+          {newGig && <NewGig />}
+        </div>
+      </ThemeProvider>
     </ApolloProvider>
   );
 }

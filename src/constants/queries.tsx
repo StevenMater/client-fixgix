@@ -15,7 +15,7 @@ export const GET_GROUPS_BY_ID = gql`
 `;
 
 export const GET_GIGS_BY_GROUP = gql`
-  query GET_GIGS_BY_GROUP($groupId: uuid = "") {
+  query ($groupId: uuid = "") {
     groups_by_pk(id: $groupId) {
       id
       name
@@ -30,7 +30,7 @@ export const GET_GIGS_BY_GROUP = gql`
         user {
           id
           email
-          username
+          userName
           firstName
           lastName
           picture
@@ -69,7 +69,7 @@ export const GET_GIG_BY_ID = gql`
           id
           firstName
           lastName
-          nickName
+          userName
           picture
           email
         }

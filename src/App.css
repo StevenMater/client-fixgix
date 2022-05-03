@@ -1,14 +1,14 @@
 :root {
-  --background-color: #ffffff;
-  --background-secondary: #247ba0;
+  --main-background-color: #0c0c0c;
+  --secondary-background-color: #121212;
   --decoration-color: #b9d6f2;
-  --text-color: #202a25;
+  --text-color: #fff;
   --alt-color: #5fdd9d;
 }
 
 .App {
   text-align: center;
-  background-color: var(--background-color);
+  background-color: var(--main-background-color);
   color: var(--text-color);
   text-decoration: none;
 }

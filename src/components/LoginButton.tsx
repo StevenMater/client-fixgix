@@ -1,16 +1,11 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@mui/material';
-import { decorationColor } from '../constants/colors';
 
 export default function LoginButton() {
   const { loginWithRedirect } = useAuth0();
 
   return (
-    <Button
-      variant="contained"
-      onClick={() => loginWithRedirect()}
-      sx={{ backgroundColor: decorationColor }}
-    >
+    <Button variant="contained" onClick={() => loginWithRedirect()}>
       Log in
     </Button>
   );
