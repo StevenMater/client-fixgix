@@ -161,7 +161,7 @@ export default function NewGigForm({ close }: { close: any }) {
         });
       }}
     >
-      <Form className="px-3">
+      <Form className="form-container px-3">
         <div className="row">
           <div className="col-12 col-md-10">
             <MySelect label="Gig status" name="gigStatus">

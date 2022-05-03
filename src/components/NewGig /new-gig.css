@@ -1,12 +1,12 @@
 .new-gig-nav-bar {
   overflow: hidden;
-  position: fixed; /* Set the navbar to fixed position */
-  top: 0; /* Position the navbar at the top of the page */
-  width: 100%; /* Full width */
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 .form-container {
   padding: 1rem;
-
-  /* width: 100vh; */
+  margin-top: 3rem;
+  background-color: var(--text-color);
 }

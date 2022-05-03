@@ -48,8 +48,7 @@ export default function NewGig() {
         TransitionComponent={Transition}
       >
         <div className="overflow-auto">
-          <AppBar sx={{ position: 'relative' }}>
-            {/* <AppBar className="new-gig-nav-bar"> */}
+          <AppBar sx={{ position: 'fixed' }}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -64,9 +63,9 @@ export default function NewGig() {
                 New gig
               </Typography>
 
-              {/* <Button autoFocus color="inherit" className="fixed">
+              <Button autoFocus color="inherit" className="fixed">
                 save
-              </Button> */}
+              </Button>
             </Toolbar>
           </AppBar>
           <NewGigForm close={() => close()} />

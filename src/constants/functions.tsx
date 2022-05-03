@@ -1,25 +1,27 @@
+import { afterSale, cancelled, confirmed, offered, requested } from './colors';
+
 export const statusColorPicker = (gigStatus: string) => {
   let color: string;
 
   switch (gigStatus) {
     case 'requested': {
-      color = '#eee83C';
+      color = requested;
       break;
     }
     case 'offered': {
-      color = '#fd7520';
+      color = offered;
       break;
     }
     case 'confirmed': {
-      color = '#51AC0C';
+      color = confirmed;
       break;
     }
     case 'cancelled': {
-      color = '#f21313';
+      color = cancelled;
       break;
     }
     case 'afterSale': {
-      color = '#b9d6f2';
+      color = afterSale;
       break;
     }
     default: {

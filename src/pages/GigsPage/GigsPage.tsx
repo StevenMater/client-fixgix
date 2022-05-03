@@ -50,10 +50,7 @@ export default function GigsPage() {
   // console.log('openGigId :>> ', openGigId);
 
   return (
-    <div className="gigs-container d-flex flex-column p-3 align-items-center">
-      <div>
-        <h2>{name}</h2>
-      </div>
+    <div className="gigs-container">
       <div>
         <h4>Members:</h4>
         {groupsUsers.map((user: any) => {
@@ -69,7 +66,7 @@ export default function GigsPage() {
           );
         })}
       </div>
-      <div className=" d-flex flex-wrap justify-content-around mt-5">
+      <div className="card-container">
         {gigs.map((gig: any) => {
           const { id, gigDate, gigTitle, gigStatus } = gig;
 

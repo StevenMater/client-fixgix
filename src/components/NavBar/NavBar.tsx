@@ -29,7 +29,7 @@ import {
 
 //Queries
 import { GET_GROUPS_BY_ID } from '../../constants/queries';
-import { decorationColor } from '../../constants/colors';
+import { decorationColor, mainTextColor } from '../../constants/colors';
 import Loading from '../Loading/Loading';
 
 export default function NavBar() {
@@ -102,6 +102,7 @@ export default function NavBar() {
           value={groupId}
           label="Group"
           onChange={(event) => groupIdVar(event.target.value)}
+          sx={{ color: mainTextColor, borderColor: mainTextColor }}
         >
           {data.users_by_pk.groupsUsers.map((group: any) => {
             const { id, name } = group.group;
@@ -121,7 +122,10 @@ export default function NavBar() {
         </Button>
       )}
 
-      <h5>{user?.name}</h5>
+      <div>
+        <h2>Groupname here</h2>
+        <h5>{user?.name}</h5>
+      </div>
 
       <FormGroup>
         <FormControlLabel

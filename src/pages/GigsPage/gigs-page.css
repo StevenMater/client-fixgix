@@ -1,21 +1,46 @@
 .gigs-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   min-height: 90vh;
+
+  padding: 3rem;
+}
+
+.card-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+
+  width: 100%;
+  height: 100%;
+  /* min-width: 95%; */
+  /* min-height: 100%; */
+
+  margin: 3rem;
+
+  background-color: var(--secondary-background-color);
 }
 
 .card {
+  display: grid;
+
+  width: 30rem;
+  min-height: 12rem;
+
   margin: 20px;
   padding: 20px;
-  width: 500px;
-  min-height: 200px;
-  display: grid;
+
   grid-template-rows: 20px 50px 1fr 50px;
   border-radius: 10px;
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
   transition: all 0.2s;
   text-decoration: none;
   text-align: left;
-  background-color: var(--secondary-background-color);
+
+  background-color: var(--tertiary-background-color);
   color: var(--text-color);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.25);
 }
 
 .card:hover {
