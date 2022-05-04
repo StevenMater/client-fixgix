@@ -106,12 +106,23 @@ export default function NavBar() {
         <FormControl>
           <InputLabel>Group</InputLabel>
           <Select
+            // displayEmpty={true}
             value={groupId}
-            label="Group"
+            label="Select group"
             onChange={(event) => groupIdVar(event.target.value)}
             sx={{
               color: mainTextColor,
               borderColor: mainTextColor,
+              '& .MuiSelect-outlined': {
+                backgroundColor: '#F0EAD6',
+                color: 'black',
+              },
+              '& .MuiSelect-select': {
+                borderColor: '#664b86',
+              },
+              '& .MuiSelect-iconOpen': {
+                borderColor: '#47345d',
+              },
             }}
           >
             {groupsUsers.map((group: any) => {
@@ -158,7 +169,7 @@ export default function NavBar() {
       <Avatar
         alt={fullName || userName}
         src={picture}
-        sx={{ width: 120, height: 120 }}
+        // sx={{ width: 120, height: 120 }}
       />
     </div>
   );

@@ -1,15 +1,18 @@
 import './gigs-page.css';
 
-import { useLazyQuery, useReactiveVar } from '@apollo/client';
+import { useLazyQuery, useQuery, useReactiveVar } from '@apollo/client';
 import Loading from '../../components/Loading/Loading';
 import { useEffect } from 'react';
-import { Avatar } from '@mui/material';
+import { Autocomplete, Avatar, TextField } from '@mui/material';
 
 //Components
 import GigDetailsPage from '../GigDetailsPage/GigDetailsPage';
 
 //GQL
-import { QUERY_GIGS_BY_GROUP_PK } from '../../constants/queries';
+import {
+  QUERY_ALL_USERS,
+  QUERY_GIGS_BY_GROUP_PK,
+} from '../../constants/queries';
 
 //Constants
 import { groupIdVar, openGigIdVar, openGigVar } from '../../constants/cache';
@@ -17,12 +20,22 @@ import { statusColorPicker } from '../../constants/functions';
 
 export default function GigsPage() {
   const groupId = useReactiveVar(groupIdVar);
-
   const openGig = useReactiveVar(openGigVar);
 
-  const [getGigsByGroup, { loading, error, data }] = useLazyQuery(
-    QUERY_GIGS_BY_GROUP_PK
-  );
+  const [
+    getGigsByGroup,
+    {
+      loading: getGigsByGroupLoading,
+      error: getGigsByGroupError,
+      data: getGigsByGroupData,
+    },
+  ] = useLazyQuery(QUERY_GIGS_BY_GROUP_PK);
+
+  const {
+    loading: allUsersLoading,
+    error: allUsersError,
+    data: allUsersData,
+  } = useQuery(QUERY_ALL_USERS);
 
   useEffect(() => {
     if (groupId) {
@@ -32,16 +45,21 @@ export default function GigsPage() {
     }
   }, [groupId]);
 
-  if (loading || !data) {
+  if (getGigsByGroupLoading || allUsersLoading || !getGigsByGroupData) {
     return <Loading />;
   }
 
-  if (error) {
-    console.error(error);
+  if (getGigsByGroupError) {
+    console.error(getGigsByGroupError);
     return <div>Error!</div>;
   }
 
-  const { name, gigs, groupsUsers } = data.groups_by_pk;
+  if (allUsersError) {
+    console.error(allUsersError);
+    return <div>Error!</div>;
+  }
+
+  const { gigs, groupsUsers } = getGigsByGroupData.groups_by_pk;
 
   const openGigCard = (id: any) => {
     openGigIdVar(id);
@@ -50,7 +68,7 @@ export default function GigsPage() {
   };
 
   //Logs;
-  // console.log('data :>> ', data);
+  console.log('allUsersData :>> ', allUsersData);
   // console.log('groupId :>> ', groupId);
   // console.log('groupsUsers', groupsUsers[0].user);
   // console.log('openGig', openGig);
@@ -58,20 +76,43 @@ export default function GigsPage() {
 
   return (
     <div className="gigs-container">
-      <div>
-        <h4>Members:</h4>
-        {groupsUsers.map((user: any) => {
-          const { id, picture, firstName, lastName } = user.user;
+      <div className="menu-container">
+        {/* <div className="autocomplete-container"> */}
+        <Autocomplete
+          getOptionLabel={(option: any) => option.userName}
+          options={allUsersData.users}
+          // onChange={(e) => console.log('value', e.target.value)}
+          sx={{
+            width: 300,
 
-          return (
-            <Avatar
-              key={id}
-              alt={`${firstName} ${lastName}`}
-              src={picture}
-              sx={{ width: 60, height: 60 }}
+            '& .MuiAutocomplete-listBox': {
+              bgcolor: '#F0EAD6',
+            },
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Add user to group"
+              sx={{ bgcolor: '#F0EAD6', '& 	.MuiTextField-root': {} }}
             />
-          );
-        })}
+          )}
+        />
+        {/* </div> */}
+        <div>
+          <h4>Members:</h4>
+          {groupsUsers.map((user: any) => {
+            const { id, picture, firstName, lastName } = user.user;
+
+            return (
+              <Avatar
+                key={id}
+                alt={`${firstName} ${lastName}`}
+                src={picture}
+                // sx={{ width: 60, height: 60 }}
+              />
+            );
+          })}
+        </div>
       </div>
       <div className="card-container">
         {gigs.map((gig: any) => {

@@ -83,3 +83,12 @@ export const QUERY_GIG_BY_PK = gql`
     }
   }
 `;
+
+export const QUERY_ALL_USERS = gql`
+  query {
+    users {
+      id
+      userName
+    }
+  }
+`;
