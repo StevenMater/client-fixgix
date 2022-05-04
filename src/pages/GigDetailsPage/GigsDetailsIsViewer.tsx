@@ -1,4 +1,4 @@
-export default function GigsDetailsIsViewer({ data }: { data: any }) {
+export default function GigsDetailsIsViewer({ gigData }: { gigData: any }) {
   const {
     gigStatus,
     gigTitle,
@@ -22,7 +22,7 @@ export default function GigsDetailsIsViewer({ data }: { data: any }) {
     timeCheckOut,
     // gigsUsers,
     // updated_at,
-  } = data.gigs_by_pk;
+  } = gigData.gigs_by_pk;
 
   return (
     <div>

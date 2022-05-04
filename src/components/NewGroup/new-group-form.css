@@ -1,0 +1,9 @@
+.new-group-form-container {
+  padding: 1em;
+  color: black;
+  margin-top: 10%;
+  min-width: 35%;
+  max-width: 50%;
+  background-color: var(--text-color);
+  border-radius: 10px;
+}

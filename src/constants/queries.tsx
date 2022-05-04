@@ -3,6 +3,12 @@ import { gql } from '@apollo/client';
 export const QUERY_GROUPS_BY_USER_PK = gql`
   query ($userId: String = "") {
     users_by_pk(id: $userId) {
+      email
+      userName
+      firstName
+      lastName
+      isManager
+      picture
       groupsUsers {
         group {
           id

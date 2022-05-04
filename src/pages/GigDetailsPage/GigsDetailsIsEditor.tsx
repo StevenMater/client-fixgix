@@ -15,8 +15,11 @@ import Loading from '../../components/Loading/Loading';
 
 //Constants
 import { date } from '../../constants/cache';
+import { MUTATION_UPDATE_GIG } from '../../constants/mutations';
+import { QUERY_GIG_BY_PK } from '../../constants/queries';
+import { useEffect, useState } from 'react';
 
-export default function GigsDetailsIsEditor({ data }: { data: any }) {
+export default function GigsDetailsIsEditor({ gigData }: { gigData: any }) {
   const {
     id,
     gigStatus,
@@ -42,14 +45,24 @@ export default function GigsDetailsIsEditor({ data }: { data: any }) {
     gigNotes,
     // gigsUsers,
     // updated_at,
-  } = data.gigs_by_pk;
+  } = gigData.gigs_by_pk;
+
+  const [updateGig, { loading, error }] = useMutation(MUTATION_UPDATE_GIG, {
+    refetchQueries: [QUERY_GIG_BY_PK],
+  });
+
+  if (loading) return <Loading />;
+
+  if (error) return <div>`Submission error! ${error?.message}`</div>;
 
   //Logs
   // console.log('error', error);
-  console.log('id', id);
+  // console.log('id', id);
+  // console.log('data', data);
 
   return (
     <Formik
+      enableReinitialize={true}
       initialValues={{
         gigStatus: gigStatus,
         gigTitle: gigTitle,
@@ -107,8 +120,8 @@ export default function GigsDetailsIsEditor({ data }: { data: any }) {
         timeCheckOut: Yup.string(),
         gigNotes: Yup.string(),
       })}
-      onSubmit={(values) => {
-        console.log('values', values);
+      onSubmit={(values, {}) => {
+        // console.log('values', values);
 
         const {
           gigStatus,
@@ -119,6 +132,7 @@ export default function GigsDetailsIsEditor({ data }: { data: any }) {
           gigIsParking,
           gigIsDinner,
           gigPayMembers,
+          gigNotes,
           showDressCode,
           showAmountOfSets,
           showExtraXL,
@@ -131,35 +145,34 @@ export default function GigsDetailsIsEditor({ data }: { data: any }) {
           timeShowStart,
           timeShowEnd,
           timeCheckOut,
-          gigNotes,
         } = values;
 
-        // addGig({
-        //   variables: {
-        //     id,
-        //     gigStatus,
-        //     gigTitle,
-        //     gigDate,
-        //     gigOccasion,
-        //     gigImportantGuests,
-        //     gigIsParking,
-        //     gigIsDinner,
-        //     gigPayMembers,
-        //     showDressCode,
-        //     showAmountOfSets,
-        //     showExtraXL,
-        //     showExtraDJ,
-        //     timeCheckInSoundEngineer,
-        //     timeCheckInGroup,
-        //     timeSoundCheck,
-        //     timeReadyForShow,
-        //     timeDinner,
-        //     timeShowStart,
-        //     timeShowEnd,
-        //     timeCheckOut,
-        //     gigNotes,
-        //   },
-        // });
+        updateGig({
+          variables: {
+            id,
+            gigStatus,
+            gigTitle,
+            gigDate,
+            gigOccasion,
+            gigImportantGuests,
+            gigIsParking,
+            gigIsDinner,
+            gigPayMembers,
+            gigNotes,
+            showDressCode,
+            showAmountOfSets,
+            showExtraXL,
+            showExtraDJ,
+            timeCheckInSoundEngineer,
+            timeCheckInGroup,
+            timeSoundCheck,
+            timeReadyForShow,
+            timeDinner,
+            timeShowStart,
+            timeShowEnd,
+            timeCheckOut,
+          },
+        });
       }}
     >
       <Form className="px-3">

@@ -37,7 +37,7 @@ export default function NewGigForm({ close }: { close: any }) {
 
   useEffect(() => {
     if (!loadingAddGig && dataAddGig) {
-      const gigId = dataAddGig.insert_gigs.returning[0].id;
+      const gigId = dataAddGig.insert_gigs_one.id;
 
       linkGigUser({ variables: { gigId } }).then(() => close());
     }

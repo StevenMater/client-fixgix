@@ -1,3 +1,5 @@
+import './login-page.css';
+
 import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -15,9 +17,11 @@ export default function LoginPage() {
   }, [isAuthenticated]);
 
   return (
-    <div>
-      <h1>Please Log in to use FixGix</h1>
-      <LoginButton />
+    <div className="login-page-container">
+      <div className="login-page-content">
+        <h1>Please log in or sign up to use FixGix!</h1>
+        <LoginButton />
+      </div>
     </div>
   );
 }

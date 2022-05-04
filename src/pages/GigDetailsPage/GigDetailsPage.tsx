@@ -84,7 +84,7 @@ export default function CustomizedDialogs() {
   const { gigDate, gigTitle, gigStatus } = data.gigs_by_pk;
 
   //Logs
-  console.log('data', data);
+  // console.log('data', data);
 
   return (
     <div>
@@ -105,9 +105,9 @@ export default function CustomizedDialogs() {
 
         <DialogContent dividers>
           {isEditor ? (
-            <GigsDetailsIsEditor data={data} />
+            <GigsDetailsIsEditor gigData={data} />
           ) : (
-            <GigsDetailsIsViewer data={data} />
+            <GigsDetailsIsViewer gigData={data} />
           )}
         </DialogContent>
         {/* <DialogActions>

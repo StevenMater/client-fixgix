@@ -6,6 +6,10 @@
 .nav-bar-container {
   background-color: var(--secondary-background-color);
   height: 10vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .profile-picture {

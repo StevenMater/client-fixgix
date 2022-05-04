@@ -1,4 +1,3 @@
-import './App.css';
 import { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
@@ -21,13 +20,18 @@ import GigsPage from './pages/GigsPage/GigsPage';
 import LoginPage from './pages/LoginPage/LoginPage';
 
 //Cache
-import { isEditorVar, newGigVar, userIdVar } from './constants/cache';
+import {
+  groupIdVar,
+  isEditorVar,
+  newGigVar,
+  userIdVar,
+} from './constants/cache';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './constants/colors';
+import WelcomePage from './pages/WelcomePage/WelcomePage';
 
 //Env constants
 const graphqlUri: string = process.env.REACT_APP_GRAPHQL_URI as string;
-const domain: string = process.env.REACT_APP_AUTH0_DOMAIN as string;
 const audience: string = process.env.REACT_APP_AUTH0_AUDIENCE as string;
 
 function App() {
@@ -41,6 +45,7 @@ function App() {
   const [client, setClient] = useState<any | undefined>(undefined);
 
   const newGig = useReactiveVar(newGigVar);
+  const groupId = useReactiveVar(groupIdVar);
 
   const getAccessToken = async () => {
     try {
@@ -49,7 +54,7 @@ function App() {
         scope: 'read:current_user',
       });
 
-      console.log('accessToken :>> ', accessToken);
+      // console.log('accessToken :>> ', accessToken);
 
       // setAccessToken(accessToken);
 
@@ -111,6 +116,8 @@ function App() {
 
   if (isLoading || client === undefined) return <Loading />;
 
+  const mainPage = groupId ? <GigsPage /> : <WelcomePage />;
+
   //Logs
   // console.log('client :>> ', client);
   // console.log('accessToken :>> ', accessToken);
@@ -118,18 +125,17 @@ function App() {
   // console.log('isLoading :>> ', isLoading);
   // console.log('isEditor :>> ', isEditorVar());
   // console.log('newGig :>> ', newGig);
+  // console.log('groupId', groupId);
 
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
-        <div className="App">
-          <NavBar />
-          <Routes>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/" element={<GigsPage />} />
-          </Routes>
-          {newGig && <NewGig />}
-        </div>
+        <NavBar />
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={mainPage} />
+        </Routes>
+        {newGig && <NewGig />}
       </ThemeProvider>
     </ApolloProvider>
   );

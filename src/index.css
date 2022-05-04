@@ -11,3 +11,28 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+:root {
+  --main-background-color: #0c0c0c;
+  --secondary-background-color: #121212;
+  --tertiary-background-color: #202020;
+
+  /* --main-decoration-color */
+
+  --decoration-color: #b9d6f2;
+  --text-color: #f0ead6;
+  --alt-color: #5fdd9d;
+}
+
+.main-window {
+  min-height: 100vh;
+  text-align: center;
+  background-color: var(--main-background-color);
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.navlink {
+  text-decoration: none;
+  color: var(--text-color);
+}

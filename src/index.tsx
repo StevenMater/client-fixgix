@@ -25,7 +25,9 @@ root.render(
     useRefreshTokens={true}
   >
     <BrowserRouter>
-      <App />
+      <div className="main-window">
+        <App />
+      </div>
     </BrowserRouter>
   </Auth0Provider>
 );

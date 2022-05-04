@@ -2,10 +2,11 @@ import './nav-bar.css';
 
 import { useLazyQuery, useReactiveVar } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 import {
+  Avatar,
   Button,
   FormControl,
   FormControlLabel,
@@ -17,7 +18,6 @@ import {
 } from '@mui/material';
 
 //Components
-import LoginButton from '../LoginButton';
 import LogoutButton from '../LogoutButton';
 import Loading from '../Loading/Loading';
 
@@ -34,7 +34,7 @@ import { QUERY_GROUPS_BY_USER_PK } from '../../constants/queries';
 import { mainTextColor } from '../../constants/colors';
 
 export default function NavBar() {
-  const { user, isAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAuth0();
   const navigate = useNavigate();
 
   const groupId = useReactiveVar(groupIdVar);
@@ -43,12 +43,6 @@ export default function NavBar() {
 
   const [getGroupsById, { loading, error, data }] = useLazyQuery(
     QUERY_GROUPS_BY_USER_PK
-  );
-
-  const userControls: any = isAuthenticated ? (
-    <LogoutButton />
-  ) : (
-    <LoginButton />
   );
 
   useEffect(() => {
@@ -67,23 +61,18 @@ export default function NavBar() {
 
   useEffect(() => {
     if (data) {
-      groupIdVar(data.users_by_pk.groupsUsers[0].group.id);
+      data.users_by_pk.groupsUsers.length > 0 &&
+        groupIdVar(data.users_by_pk.groupsUsers[0].group.id);
     }
   }, [data]);
 
   //Logs
-  // console.log('filter :>> ', filter);
   // console.log('data :>> ', data);
-  // console.log('user :>> ', user);
-  // console.log('isEditor :>> ', isEditor);
-  // console.log('user.picture', user?.picture);
   // console.log('isLoading', loading);
-  // console.log('isAuthenticated :>> ', isAuthenticated);
-  // console.log('filter data :>> ', data.users_by_pk.groupsUsers[0].id);
 
   if (!isAuthenticated) return null;
 
-  if (!data || loading) {
+  if (loading || !data) {
     return <Loading />;
   }
 
@@ -92,65 +81,85 @@ export default function NavBar() {
     return <div>Error!</div>;
   }
 
+  const {
+    email,
+    firstName,
+    lastName,
+    isManager,
+    picture,
+    userName,
+    groupsUsers,
+  } = data.users_by_pk;
+
+  const fullName = `${firstName} ${lastName}`;
+
+  //Logs
+  // console.log('data', data);
+  // console.log('user :>> ', user);
+  // console.log('isEditor :>> ', isEditor);
+  // console.log('isAuthenticated :>> ', isAuthenticated);
+  // console.log('userId', userId);
+
   return (
-    <div className="nav-bar-container d-flex flex-row align-items-center justify-content-around">
-      <NavLink to="/" className="navlink">
-        <h3>FixGix</h3>
-      </NavLink>
+    <div className="nav-bar-container">
+      {groupId && (
+        <FormControl>
+          <InputLabel>Group</InputLabel>
+          <Select
+            value={groupId}
+            label="Group"
+            onChange={(event) => groupIdVar(event.target.value)}
+            sx={{
+              color: mainTextColor,
+              borderColor: mainTextColor,
+            }}
+          >
+            {groupsUsers.map((group: any) => {
+              const { id, name } = group.group;
 
-      <FormControl>
-        <InputLabel>Group</InputLabel>
-        <Select
-          value={groupId}
-          label="Group"
-          onChange={(event) => groupIdVar(event.target.value)}
-          sx={{
-            color: mainTextColor,
-            borderColor: mainTextColor,
-          }}
-        >
-          {data.users_by_pk.groupsUsers.map((group: any) => {
-            const { id, name } = group.group;
+              return (
+                <MenuItem key={id} value={id}>
+                  {name}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+      )}
 
-            return (
-              <MenuItem key={id} value={id}>
-                {name}
-              </MenuItem>
-            );
-          })}
-        </Select>
-      </FormControl>
-
-      {isEditor && (
+      {groupId && isEditor && (
         <Button variant="contained" onClick={() => newGigVar(!newGigVar())}>
           New gig
         </Button>
       )}
 
-      <div>
-        <h2>Groupname here</h2>
-        <h5>{user?.name}</h5>
-      </div>
-
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              // defaultChecked
-              color="warning"
-              checked={isEditorVar() === true}
-              onChange={() => isEditorVar(!isEditor)}
-            />
-          }
-          label="Editor"
-        />
-      </FormGroup>
-
-      {userControls}
-
-      {user && (
-        <img src={user?.picture} alt={user?.name} className="profile-picture" />
+      {groupId && (
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Switch
+                // defaultChecked
+                color="warning"
+                checked={isEditorVar() === true}
+                onChange={() => isEditorVar(!isEditor)}
+              />
+            }
+            label="Manager"
+          />
+        </FormGroup>
       )}
+
+      <h2>FixGix</h2>
+
+      <h5>{email}</h5>
+
+      <LogoutButton />
+
+      <Avatar
+        alt={fullName || userName}
+        src={picture}
+        sx={{ width: 120, height: 120 }}
+      />
     </div>
   );
 }

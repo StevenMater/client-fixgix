@@ -18,13 +18,15 @@ export const theme = createTheme({
 });
 
 //Gig colors
-export const requested = '#fabd28';
+export const requested = '#FAF324';
+// export const requested = '#fabd28';
 
 export const offered = '#d87702';
 
 export const cancelled = '#b51902';
 
-export const confirmed = '#a6ab35';
+export const confirmed = '#3a780b';
+// export const confirmed = '#a6ab35';
 
 export const afterSale = '#1c74e0';
 
