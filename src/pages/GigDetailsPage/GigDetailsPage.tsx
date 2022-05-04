@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import { useQuery, useReactiveVar } from '@apollo/client';
 import { openGigVar, openGigIdVar, isEditorVar } from '../../constants/cache';
 import Loading from '../../components/Loading/Loading';
-import { GET_GIG_BY_ID } from '../../constants/queries';
+import { QUERY_GIG_BY_PK } from '../../constants/queries';
 import GigsDetailsIsViewer from './GigsDetailsIsViewer';
 import GigsDetailsIsEditor from './GigsDetailsIsEditor';
 import { statusColorPicker } from '../../constants/functions';
@@ -68,7 +68,7 @@ export default function CustomizedDialogs() {
     openGigVar(false);
   };
 
-  const { loading, error, data } = useQuery(GET_GIG_BY_ID, {
+  const { loading, error, data } = useQuery(QUERY_GIG_BY_PK, {
     variables: { gigId },
   });
 
@@ -107,7 +107,7 @@ export default function CustomizedDialogs() {
           {isEditor ? (
             <GigsDetailsIsEditor data={data} />
           ) : (
-            <GigsDetailsIsViewer gigId={gigId} />
+            <GigsDetailsIsViewer data={data} />
           )}
         </DialogContent>
         {/* <DialogActions>

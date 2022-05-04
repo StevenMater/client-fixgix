@@ -1,12 +1,18 @@
 import './gigs-page.css';
 
 import { useLazyQuery, useReactiveVar } from '@apollo/client';
-import { groupIdVar, openGigIdVar, openGigVar } from '../../constants/cache';
-import { GET_GIGS_BY_GROUP } from '../../constants/queries';
 import Loading from '../../components/Loading/Loading';
 import { useEffect } from 'react';
 import { Avatar } from '@mui/material';
+
+//Components
 import GigDetailsPage from '../GigDetailsPage/GigDetailsPage';
+
+//GQL
+import { QUERY_GIGS_BY_GROUP_PK } from '../../constants/queries';
+
+//Constants
+import { groupIdVar, openGigIdVar, openGigVar } from '../../constants/cache';
 import { statusColorPicker } from '../../constants/functions';
 
 export default function GigsPage() {
@@ -14,8 +20,9 @@ export default function GigsPage() {
 
   const openGig = useReactiveVar(openGigVar);
 
-  const [getGigsByGroup, { loading, error, data }] =
-    useLazyQuery(GET_GIGS_BY_GROUP);
+  const [getGigsByGroup, { loading, error, data }] = useLazyQuery(
+    QUERY_GIGS_BY_GROUP_PK
+  );
 
   useEffect(() => {
     if (groupId) {

@@ -1,21 +1,4 @@
-import { useQuery } from '@apollo/client';
-import Loading from '../../components/Loading/Loading';
-import { GET_GIG_BY_ID } from '../../constants/queries';
-
-export default function GigsDetailsIsViewer({ gigId }: { gigId: string }) {
-  const { loading, error, data } = useQuery(GET_GIG_BY_ID, {
-    variables: { gigId },
-  });
-
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (error) {
-    console.error(error);
-    return <div>Error!</div>;
-  }
-
+export default function GigsDetailsIsViewer({ data }: { data: any }) {
   const {
     gigStatus,
     gigTitle,

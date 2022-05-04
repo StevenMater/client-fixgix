@@ -3,6 +3,8 @@ import './nav-bar.css';
 import { useLazyQuery, useReactiveVar } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+
 import {
   Button,
   FormControl,
@@ -13,11 +15,11 @@ import {
   Select,
   Switch,
 } from '@mui/material';
-import { useEffect } from 'react';
 
 //Components
 import LoginButton from '../LoginButton';
 import LogoutButton from '../LogoutButton';
+import Loading from '../Loading/Loading';
 
 //Cache
 import {
@@ -28,9 +30,8 @@ import {
 } from '../../constants/cache';
 
 //Queries
-import { GET_GROUPS_BY_ID } from '../../constants/queries';
-import { decorationColor, mainTextColor } from '../../constants/colors';
-import Loading from '../Loading/Loading';
+import { QUERY_GROUPS_BY_USER_PK } from '../../constants/queries';
+import { mainTextColor } from '../../constants/colors';
 
 export default function NavBar() {
   const { user, isAuthenticated } = useAuth0();
@@ -40,8 +41,9 @@ export default function NavBar() {
   const isEditor = useReactiveVar(isEditorVar);
   const userId = useReactiveVar(userIdVar);
 
-  const [getGroupsById, { loading, error, data }] =
-    useLazyQuery(GET_GROUPS_BY_ID);
+  const [getGroupsById, { loading, error, data }] = useLazyQuery(
+    QUERY_GROUPS_BY_USER_PK
+  );
 
   const userControls: any = isAuthenticated ? (
     <LogoutButton />
@@ -102,7 +104,10 @@ export default function NavBar() {
           value={groupId}
           label="Group"
           onChange={(event) => groupIdVar(event.target.value)}
-          sx={{ color: mainTextColor, borderColor: mainTextColor }}
+          sx={{
+            color: mainTextColor,
+            borderColor: mainTextColor,
+          }}
         >
           {data.users_by_pk.groupsUsers.map((group: any) => {
             const { id, name } = group.group;

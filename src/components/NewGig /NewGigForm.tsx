@@ -9,11 +9,12 @@ import { Button, MenuItem } from '@mui/material';
 
 //Queries
 import { date, groupIdVar } from '../../constants/cache';
+import { QUERY_GIGS_BY_GROUP_PK } from '../../constants/queries';
+
 import {
-  ADD_GIG,
-  GET_GIGS_BY_GROUP,
-  LINK_GIG_USER,
-} from '../../constants/queries';
+  MUTATION_ADD_GIG,
+  MUTATION_LINK_GIG_USER,
+} from '../../constants/mutations';
 
 //Components
 import Loading from '../Loading/Loading';
@@ -25,13 +26,13 @@ export default function NewGigForm({ close }: { close: any }) {
   const [
     addGig,
     { data: dataAddGig, loading: loadingAddGig, error: errorAddGig },
-  ] = useMutation(ADD_GIG);
+  ] = useMutation(MUTATION_ADD_GIG);
 
   const [
     linkGigUser,
     { loading: loadingLinkGigUser, error: errorLinkGigUser },
-  ] = useMutation(LINK_GIG_USER, {
-    refetchQueries: [GET_GIGS_BY_GROUP],
+  ] = useMutation(MUTATION_LINK_GIG_USER, {
+    refetchQueries: [QUERY_GIGS_BY_GROUP_PK],
   });
 
   useEffect(() => {

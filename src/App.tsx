@@ -45,12 +45,11 @@ function App() {
   const getAccessToken = async () => {
     try {
       const accessToken: any = await getAccessTokenSilently({
-        // audience: `https://${domain}/api/v2/`,
         audience: audience,
         scope: 'read:current_user',
       });
 
-      // console.log('accessToken :>> ', accessToken);
+      console.log('accessToken :>> ', accessToken);
 
       // setAccessToken(accessToken);
 

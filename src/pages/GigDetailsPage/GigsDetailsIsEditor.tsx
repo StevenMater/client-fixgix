@@ -1,4 +1,7 @@
-import Loading from '../../components/Loading/Loading';
+import { Form, Formik } from 'formik';
+import * as Yup from 'yup';
+import { useMutation, useReactiveVar } from '@apollo/client';
+import { Button, MenuItem } from '@mui/material';
 
 import {
   MyCheckbox,
@@ -7,23 +10,15 @@ import {
   MyTextInput,
 } from '../../components/Formik';
 
-import { Form, Formik } from 'formik';
-import * as Yup from 'yup';
-import { useEffect } from 'react';
-import { useMutation, useReactiveVar } from '@apollo/client';
+//Components
+import Loading from '../../components/Loading/Loading';
 
-import { Button, MenuItem } from '@mui/material';
-
-//Queries
-import { date, groupIdVar } from '../../constants/cache';
-import {
-  ADD_GIG,
-  GET_GIGS_BY_GROUP,
-  LINK_GIG_USER,
-} from '../../constants/queries';
+//Constants
+import { date } from '../../constants/cache';
 
 export default function GigsDetailsIsEditor({ data }: { data: any }) {
   const {
+    id,
     gigStatus,
     gigTitle,
     gigDate,
@@ -51,6 +46,7 @@ export default function GigsDetailsIsEditor({ data }: { data: any }) {
 
   //Logs
   // console.log('error', error);
+  console.log('id', id);
 
   return (
     <Formik
@@ -140,7 +136,7 @@ export default function GigsDetailsIsEditor({ data }: { data: any }) {
 
         // addGig({
         //   variables: {
-        //     groupId,
+        //     id,
         //     gigStatus,
         //     gigTitle,
         //     gigDate,
