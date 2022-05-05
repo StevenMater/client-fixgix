@@ -60,6 +60,7 @@ export default function GigsPage() {
   }
 
   const { gigs, groupsUsers } = getGigsByGroupData.groups_by_pk;
+  const { users } = allUsersData;
 
   const openGigCard = (id: any) => {
     openGigIdVar(id);
@@ -68,7 +69,7 @@ export default function GigsPage() {
   };
 
   //Logs;
-  console.log('allUsersData :>> ', allUsersData);
+  // console.log('allUsersData :>> ', users);
   // console.log('groupId :>> ', groupId);
   // console.log('groupsUsers', groupsUsers[0].user);
   // console.log('openGig', openGig);
@@ -79,9 +80,18 @@ export default function GigsPage() {
       <div className="menu-container">
         {/* <div className="autocomplete-container"> */}
         <Autocomplete
+          isOptionEqualToValue={(option, value) =>
+            option.userName === value.userName
+          }
           getOptionLabel={(option: any) => option.userName}
-          options={allUsersData.users}
-          // onChange={(e) => console.log('value', e.target.value)}
+          options={users}
+          renderOption={(option: any, props: any) => {
+            return (
+              <li {...props} key={option.id}>
+                <div>{option.userName}</div>
+              </li>
+            );
+          }}
           sx={{
             width: 300,
 
