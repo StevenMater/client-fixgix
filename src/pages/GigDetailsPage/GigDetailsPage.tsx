@@ -15,6 +15,8 @@ import { QUERY_GIG_BY_PK } from '../../constants/queries';
 import GigsDetailsIsViewer from './GigsDetailsIsViewer';
 import GigsDetailsIsEditor from './GigsDetailsIsEditor';
 import { statusColorPicker } from '../../constants/functions';
+import { Avatar, AvatarGroup } from '@mui/material';
+import moment from 'moment';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -81,13 +83,16 @@ export default function CustomizedDialogs() {
     return <div>Error!</div>;
   }
 
-  const { gigDate, gigTitle, gigStatus } = data.gigs_by_pk;
+  const { gigDate, gigTitle, gigStatus, gigsUsers, updated_at } =
+    data.gigs_by_pk;
 
   //Logs
   // console.log('data', data);
+  // console.log('gigUsers', gigsUsers);
+  // console.log('updatedAt', updated_at);
 
   return (
-    <div>
+    <div className="gigs-details-container">
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -100,7 +105,26 @@ export default function CustomizedDialogs() {
           onClose={handleClose}
           backgroundColor={statusColorPicker(gigStatus)}
         >
-          {gigDate} - {gigTitle}
+          <div>
+            <h3>
+              {gigDate} - {gigTitle}
+            </h3>
+            <h6>Last updated at: {moment(updated_at).format('DD-MM-YYYY')}</h6>
+          </div>
+
+          <AvatarGroup max={8} sx={{ flexDirection: 'row' }}>
+            {gigsUsers.map((user: any) => {
+              const { id, picture, firstName, lastName } = user.user;
+
+              return (
+                <Avatar
+                  key={id}
+                  alt={`${firstName} ${lastName}`}
+                  src={picture}
+                />
+              );
+            })}
+          </AvatarGroup>
         </BootstrapDialogTitle>
 
         <DialogContent dividers>
@@ -110,39 +134,12 @@ export default function CustomizedDialogs() {
             <GigsDetailsIsViewer gigData={data} />
           )}
         </DialogContent>
-        {/* <DialogActions>
+        <DialogActions>
           <Button autoFocus onClick={handleClose}>
             Save changes
           </Button>
-        </DialogActions> */}
+        </DialogActions>
       </BootstrapDialog>
     </div>
   );
 }
-
-// import './gigs-details-page.css';
-
-// import { useReactiveVar } from '@apollo/client';
-// import { useParams } from 'react-router-dom';
-// import GigsDetailsIsEditor from './GigsDetailsIsEditor';
-// import GigsDetailsIsViewer from './GigsDetailsIsViewer';
-// import { isEditorVar } from '../../constants/cache';
-
-// export default function GigDetailsPage() {
-//   const { gigId } = useParams<string>();
-//   const isEditor = useReactiveVar(isEditorVar);
-
-//   //Logs
-//   // console.log('data :>> ', data.gigs_by_pk);
-//   // console.log('isEditorRole :>> ', isEditorRole);
-
-//   return (
-//     <div className="gigs-details-container p-3">
-//       {isEditor ? (
-//         <GigsDetailsIsEditor gigId={gigId || ''} />
-//       ) : (
-//         <GigsDetailsIsViewer gigId={gigId || ''} />
-//       )}
-//     </div>
-//   );
-// }

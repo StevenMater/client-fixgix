@@ -1,0 +1,24 @@
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 100%;
+  min-height: 90vh;
+  padding: 1rem;
+}
+
+.autocomplete-option {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  /* border-bottom: 1px black solid; */
+  padding: 0.25rem;
+}
+
+.group-members-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 2%;
+}

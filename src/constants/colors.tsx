@@ -18,7 +18,7 @@ export const theme = createTheme({
 });
 
 //Gig colors
-export const requested = '#FAF324';
+export const requested = '#FFF700';
 // export const requested = '#fabd28';
 
 export const offered = '#d87702';

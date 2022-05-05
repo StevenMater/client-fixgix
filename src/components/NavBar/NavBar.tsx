@@ -162,14 +162,14 @@ export default function NavBar() {
 
       <h2>FixGix</h2>
 
-      <h5>{email}</h5>
+      {/* <h5>{email}</h5> */}
 
       <LogoutButton />
 
       <Avatar
         alt={fullName || userName}
         src={picture}
-        // sx={{ width: 120, height: 120 }}
+        sx={{ width: 120, height: 120 }}
       />
     </div>
   );

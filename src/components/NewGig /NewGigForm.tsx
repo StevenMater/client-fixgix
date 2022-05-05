@@ -8,7 +8,7 @@ import { useMutation, useReactiveVar } from '@apollo/client';
 import { Button, MenuItem } from '@mui/material';
 
 //Queries
-import { date, groupIdVar } from '../../constants/cache';
+import { date, groupIdVar, userIdVar } from '../../constants/cache';
 import { QUERY_GIGS_BY_GROUP_PK } from '../../constants/queries';
 
 import {
@@ -22,6 +22,7 @@ import { MyCheckbox, MySelect, MyTextField, MyTextInput } from '../Formik';
 
 export default function NewGigForm({ close }: { close: any }) {
   const groupId = useReactiveVar(groupIdVar);
+  const userId = useReactiveVar(userIdVar);
 
   const [
     addGig,
@@ -39,7 +40,7 @@ export default function NewGigForm({ close }: { close: any }) {
     if (!loadingAddGig && dataAddGig) {
       const gigId = dataAddGig.insert_gigs_one.id;
 
-      linkGigUser({ variables: { gigId } }).then(() => close());
+      linkGigUser({ variables: { userId, gigId } }).then(() => close());
     }
   }, [loadingAddGig, dataAddGig]);
 

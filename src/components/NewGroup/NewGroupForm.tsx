@@ -1,10 +1,10 @@
 import './new-group-form.css';
-import { useMutation } from '@apollo/client';
+import { useMutation, useReactiveVar } from '@apollo/client';
 import { Button } from '@mui/material';
 import { Form, Formik } from 'formik';
 import { useEffect } from 'react';
 import * as Yup from 'yup';
-import { groupIdVar } from '../../constants/cache';
+import { groupIdVar, userIdVar } from '../../constants/cache';
 import {
   MUTATION_ADD_GROUP,
   MUTATION_LINK_GROUP_USER,
@@ -13,6 +13,8 @@ import { MyTextInput } from '../Formik';
 import Loading from '../Loading/Loading';
 
 export default function NewGroupForm({ title }: { title: string }) {
+  const userId = useReactiveVar(userIdVar);
+
   const [
     addGroup,
     { loading: loadingAddGroup, error: errorAddGroup, data: dataAddGroup },
@@ -27,7 +29,9 @@ export default function NewGroupForm({ title }: { title: string }) {
     if (!loadingAddGroup && dataAddGroup) {
       const groupId = dataAddGroup.insert_groups_one.id;
 
-      linkGroupUser({ variables: { groupId } }).then(() => groupIdVar(groupId));
+      linkGroupUser({ variables: { userId, groupId } }).then(() =>
+        groupIdVar(groupId)
+      );
     }
   }, [loadingAddGroup, dataAddGroup]);
 

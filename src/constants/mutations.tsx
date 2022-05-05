@@ -116,8 +116,8 @@ export const MUTATION_UPDATE_GIG = gql`
 // gigNotes: $gigNotes
 
 export const MUTATION_LINK_GIG_USER = gql`
-  mutation ($gigId: uuid = "") {
-    insert_gigsUsers_one(object: { gigId: $gigId }) {
+  mutation ($userId: String = "", $gigId: uuid = "") {
+    insert_gigsUsers_one(object: { userId: $userId, gigId: $gigId }) {
       id
     }
   }
@@ -138,8 +138,10 @@ export const MUTATION_ADD_GROUP = gql`
 `;
 
 export const MUTATION_LINK_GROUP_USER = gql`
-  mutation ($groupId: uuid = "") {
-    insert_groupsUsers_one(object: { groupId: $groupId, isManager: true }) {
+  mutation ($userId: String = "", $groupId: uuid = "") {
+    insert_groupsUsers_one(
+      object: { userId: $userId, groupId: $groupId, isManager: true }
+    ) {
       id
       isManager
     }
