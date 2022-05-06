@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { useEffect } from 'react';
 import { useMutation, useReactiveVar } from '@apollo/client';
 
-import { Button, MenuItem } from '@mui/material';
+import { Button, Grid, MenuItem } from '@mui/material';
 
 //Queries
 import { date, groupIdVar, userIdVar } from '../../constants/cache';
@@ -164,8 +164,10 @@ export default function NewGigForm({ close }: { close: any }) {
       }}
     >
       <Form className="form-container px-3">
-        <div className="row">
-          <div className="col-12 col-md-10">
+        <Grid container spacing="2">
+          {/* <div className="row"> */}
+          {/* <div className="col-12 col-md-10"> */}
+          <Grid item xs={12} sm={8} md={10} lg={10}>
             <MySelect label="Gig status" name="gigStatus">
               <MenuItem value="requested">Requested</MenuItem>
               <MenuItem value="offered">Offered</MenuItem>
@@ -312,11 +314,12 @@ export default function NewGigForm({ close }: { close: any }) {
             <Button variant="contained" type="submit" className="m-3">
               Save
             </Button>
-          </div>
-          <div className="col-12 col-md-2">
+          </Grid>
+
+          <Grid item xs={12} sm={4} md={2} lg={2}>
             <MyTextField label="Notes" name="gigNotes" type="text" />
-          </div>
-        </div>
+          </Grid>
+        </Grid>
       </Form>
     </Formik>
   );

@@ -7,6 +7,16 @@
   padding: 1rem;
 }
 
+.group-members-container {
+  display: flex;
+  align-self: flex-start;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin: 1rem;
+  margin-left: 5rem;
+}
+
 .autocomplete-option {
   display: flex;
   flex-direction: row;
@@ -14,11 +24,4 @@
   align-items: center;
   /* border-bottom: 1px black solid; */
   padding: 0.25rem;
-}
-
-.group-members-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-bottom: 2%;
 }

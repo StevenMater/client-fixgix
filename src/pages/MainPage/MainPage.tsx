@@ -22,6 +22,7 @@ import { MUTATION_LINK_GROUP_USER } from '../../constants/mutations';
 
 //Constants
 import { groupIdVar } from '../../constants/cache';
+import { mainTextColor } from '../../constants/colors';
 
 export default function MainPage() {
   const groupId = useReactiveVar(groupIdVar);
@@ -78,7 +79,7 @@ export default function MainPage() {
   }
 
   //Data manipulation
-  const { groupsUsers } = groupByPkData.groups_by_pk;
+  const { name, groupsUsers } = groupByPkData.groups_by_pk;
   const { users } = allUsersData;
 
   const groupsUsersPks = groupsUsers.map((user: any) => user.user.id);
@@ -90,7 +91,7 @@ export default function MainPage() {
   //   //Logs;
   //   console.log('users :>> ', users);
   //   console.log('groupId :>> ', groupId);
-  //   console.log('groupByPkData', groupByPkData);
+  // console.log('groupByPkData', groupByPkData);
   //   console.log('groupsUsers :>> ', groupsUsers);
   //   console.log('groupsUsersPks :>> ', groupsUsersPks);
   //   console.log('filteredUsers :>> ', filteredUsers);
@@ -98,6 +99,7 @@ export default function MainPage() {
   return (
     <div className="menu-container">
       <div className="group-members-container">
+        <h2>{name}</h2>
         <h5>Group members:</h5>
         <AvatarGroup max={8}>
           {groupsUsers.map((user: any) => {
@@ -108,42 +110,53 @@ export default function MainPage() {
             );
           })}
         </AvatarGroup>
-      </div>
 
-      <Autocomplete
-        options={filteredUsers}
-        isOptionEqualToValue={(option, value) =>
-          option.userName === value.userName
-        }
-        getOptionLabel={(option: any) => option.userName}
-        renderOption={(option: any, props: any) => {
-          const { id, userName, picture } = props;
+        <Autocomplete
+          options={filteredUsers}
+          isOptionEqualToValue={(option, value) =>
+            option.userName === value.userName
+          }
+          getOptionLabel={(option: any) => option.userName}
+          sx={{
+            marginTop: 2,
+            width: 300,
+            // alignSelf: 'flex-start',
+          }}
+          renderOption={(option: any, props: any) => {
+            const { id, userName, picture } = props;
 
-          return (
-            <li
-              key={id}
-              className="autocomplete-option"
-              onClick={() =>
-                linkGroupUser({ variables: { userId: id, groupId } })
-              }
-            >
-              <Avatar
+            return (
+              <li
                 key={id}
-                alt={userName}
-                src={picture}
-                sx={{ marginRight: 1 }}
-              />
-              <div>{userName}</div>
-            </li>
-          );
-        }}
-        sx={{
-          width: 300,
-        }}
-        renderInput={(params) => (
-          <TextField {...params} label="Add member to group" />
-        )}
-      />
+                className="autocomplete-option"
+                onClick={() =>
+                  linkGroupUser({ variables: { userId: id, groupId } })
+                }
+              >
+                <Avatar
+                  key={id}
+                  alt={userName}
+                  src={picture}
+                  sx={{ marginRight: 1 }}
+                />
+                <div>{userName}</div>
+              </li>
+            );
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Add member to group"
+              sx={{
+                bgcolor: 'white',
+                '& .MuiTextField-root': {
+                  backgroundColor: 'white',
+                },
+              }}
+            />
+          )}
+        />
+      </div>
 
       <GigsPage />
     </div>

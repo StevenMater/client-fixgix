@@ -32,14 +32,14 @@ import {
 //Queries
 import { QUERY_GROUPS_BY_USER_PK } from '../../constants/queries';
 import { mainTextColor } from '../../constants/colors';
-import DropDownMenu from '../DropDownMenu/DropDownMenu';
+import DropDownMenu from '../DropDownMenu/DropDownMenuUser';
+import DropDownMenuOptions from '../DropDownMenu/DropDownMenuOptions';
 
 export default function NavBar() {
   const { isAuthenticated } = useAuth0();
   const navigate = useNavigate();
 
   const groupId = useReactiveVar(groupIdVar);
-  const isEditor = useReactiveVar(isEditorVar);
   const userId = useReactiveVar(userIdVar);
 
   const [getGroupsById, { loading, error, data }] = useLazyQuery(
@@ -82,15 +82,8 @@ export default function NavBar() {
     return <div>Error!</div>;
   }
 
-  const {
-    email,
-    firstName,
-    lastName,
-    isManager,
-    picture,
-    userName,
-    groupsUsers,
-  } = data.users_by_pk;
+  const { email, firstName, lastName, picture, userName, groupsUsers } =
+    data.users_by_pk;
 
   const fullName = `${firstName} ${lastName}`;
 
@@ -110,75 +103,11 @@ export default function NavBar() {
 
   return (
     <div className="nav-bar-container">
-      {groupId && (
-        <FormControl>
-          <InputLabel>Group</InputLabel>
-          <Select
-            // displayEmpty={true}
-            value={groupId}
-            label="Select group"
-            onChange={(event) => groupIdVar(event.target.value)}
-            sx={{
-              color: mainTextColor,
-              borderColor: mainTextColor,
-              '& .MuiSelect-outlined': {
-                backgroundColor: '#ffffff',
-                color: 'black',
-              },
-              '& .MuiSelect-select': {
-                borderColor: '#664b86',
-              },
-              '& .MuiSelect-iconOpen': {
-                borderColor: '#47345d',
-              },
-            }}
-          >
-            {groupsUsers.map((group: any) => {
-              const { id, name } = group.group;
-
-              return (
-                <MenuItem key={id} value={id}>
-                  {name}
-                </MenuItem>
-              );
-            })}
-          </Select>
-        </FormControl>
-      )}
-
-      {groupId && isEditor && (
-        <Button variant="contained" onClick={() => newGigVar(!newGigVar())}>
-          New gig
-        </Button>
-      )}
-
-      {groupId && (
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Switch
-                // defaultChecked
-                color="warning"
-                checked={isEditorVar() === true}
-                onChange={() => isEditorVar(!isEditor)}
-              />
-            }
-            label="Manager"
-          />
-        </FormGroup>
-      )}
+      <DropDownMenuOptions groupsUsers={groupsUsers} />
 
       <h2>FixGix</h2>
 
-      <LogoutButton />
-
       <DropDownMenu userDetails={userDetails} />
-
-      {/* <Avatar
-        alt={fullName || userName}
-        src={picture}
-        sx={{ width: 120, height: 120 }}
-      /> */}
     </div>
   );
 }
