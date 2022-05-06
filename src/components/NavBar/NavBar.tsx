@@ -32,6 +32,7 @@ import {
 //Queries
 import { QUERY_GROUPS_BY_USER_PK } from '../../constants/queries';
 import { mainTextColor } from '../../constants/colors';
+import DropDownMenu from '../DropDownMenu/DropDownMenu';
 
 export default function NavBar() {
   const { isAuthenticated } = useAuth0();
@@ -93,6 +94,13 @@ export default function NavBar() {
 
   const fullName = `${firstName} ${lastName}`;
 
+  const userDetails = {
+    email: email,
+    fullName: fullName,
+    userName: userName,
+    picture: picture,
+  };
+
   //Logs
   // console.log('data', data);
   // console.log('user :>> ', user);
@@ -114,7 +122,7 @@ export default function NavBar() {
               color: mainTextColor,
               borderColor: mainTextColor,
               '& .MuiSelect-outlined': {
-                backgroundColor: '#F0EAD6',
+                backgroundColor: '#ffffff',
                 color: 'black',
               },
               '& .MuiSelect-select': {
@@ -162,15 +170,15 @@ export default function NavBar() {
 
       <h2>FixGix</h2>
 
-      {/* <h5>{email}</h5> */}
-
       <LogoutButton />
 
-      <Avatar
+      <DropDownMenu userDetails={userDetails} />
+
+      {/* <Avatar
         alt={fullName || userName}
         src={picture}
         sx={{ width: 120, height: 120 }}
-      />
+      /> */}
     </div>
   );
 }
