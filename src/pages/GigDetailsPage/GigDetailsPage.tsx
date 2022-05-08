@@ -1,4 +1,7 @@
+import { useQuery, useReactiveVar } from '@apollo/client';
 import * as React from 'react';
+import moment from 'moment';
+
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -8,15 +11,17 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
-import { useQuery, useReactiveVar } from '@apollo/client';
-import { openGigVar, openGigIdVar, isEditorVar } from '../../constants/cache';
+import { Avatar, AvatarGroup, Box, Grid } from '@mui/material';
+
+//Components
 import Loading from '../../components/Loading/Loading';
-import { QUERY_GIG_BY_PK } from '../../constants/queries';
 import GigsDetailsIsViewer from './GigsDetailsIsViewer';
 import GigsDetailsIsEditor from './GigsDetailsIsEditor';
+
+//Constants
+import { openGigVar, openGigIdVar, isEditorVar } from '../../constants/cache';
+import { QUERY_GIG_BY_PK } from '../../constants/queries';
 import { statusColorPicker } from '../../constants/functions';
-import { Avatar, AvatarGroup } from '@mui/material';
-import moment from 'moment';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -105,26 +110,26 @@ export default function CustomizedDialogs() {
           onClose={handleClose}
           backgroundColor={statusColorPicker(gigStatus)}
         >
-          <div>
-            <h3>
-              {gigDate} - {gigTitle}
-            </h3>
-            <h6>Last updated at: {moment(updated_at).format('DD-MM-YYYY')}</h6>
-          </div>
+          <Box>
+            <h3>{gigDate}</h3>
+            <h4>{gigTitle}</h4>
+          </Box>
 
-          <AvatarGroup max={8} sx={{ flexDirection: 'row' }}>
+          <Grid container spacing={0.1}>
             {gigsUsers.map((user: any) => {
               const { id, picture, firstName, lastName } = user.user;
 
               return (
-                <Avatar
-                  key={id}
-                  alt={`${firstName} ${lastName}`}
-                  src={picture}
-                />
+                <Grid item xs={2} sm={1} md={0.7} lg={0.6} key={id}>
+                  <Avatar
+                    alt={`${firstName} ${lastName}`}
+                    src={picture}
+                    sx={{ marginTop: 0.4, border: 2, borderColor: 'white' }}
+                  />
+                </Grid>
               );
             })}
-          </AvatarGroup>
+          </Grid>
         </BootstrapDialogTitle>
 
         <DialogContent dividers>
@@ -134,11 +139,23 @@ export default function CustomizedDialogs() {
             <GigsDetailsIsViewer gigData={data} />
           )}
         </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Save changes
-          </Button>
-        </DialogActions>
+
+        {isEditor && (
+          <DialogActions
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Box>Last updated: {moment(updated_at).format('lll')}</Box>
+
+            <Button form="update-gig" type="submit">
+              Save changes
+            </Button>
+          </DialogActions>
+        )}
       </BootstrapDialog>
     </div>
   );

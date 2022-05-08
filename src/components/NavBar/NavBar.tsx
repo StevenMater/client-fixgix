@@ -105,7 +105,7 @@ export default function NavBar() {
     <div className="nav-bar-container">
       <DropDownMenuOptions groupsUsers={groupsUsers} />
 
-      <h2>FixGix</h2>
+      <h1>FixGix</h1>
 
       <DropDownMenu userDetails={userDetails} />
     </div>

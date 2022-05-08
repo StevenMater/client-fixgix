@@ -9,12 +9,14 @@
 
 .group-members-container {
   display: flex;
-  align-self: flex-start;
+  /* align-self: flex-start; */
+  /* align-self: center; */
   flex-direction: column;
   justify-content: space-around;
-  align-items: flex-start;
+  /* align-items: flex-start; */
+  align-items: center;
   margin: 1rem;
-  margin-left: 5rem;
+  margin-left: 1rem;
 }
 
 .autocomplete-option {

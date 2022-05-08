@@ -1,6 +1,12 @@
 import './main-page.css';
 import { useEffect } from 'react';
-import { Autocomplete, Avatar, AvatarGroup, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Avatar,
+  AvatarGroup,
+  Grid,
+  TextField,
+} from '@mui/material';
 import {
   useLazyQuery,
   useMutation,
@@ -21,11 +27,12 @@ import {
 import { MUTATION_LINK_GROUP_USER } from '../../constants/mutations';
 
 //Constants
-import { groupIdVar } from '../../constants/cache';
+import { groupIdVar, isEditorVar } from '../../constants/cache';
 import { mainTextColor } from '../../constants/colors';
 
 export default function MainPage() {
   const groupId = useReactiveVar(groupIdVar);
+  const isEditor = useReactiveVar(isEditorVar);
 
   const [
     groupByPk,
@@ -98,6 +105,8 @@ export default function MainPage() {
 
   return (
     <div className="menu-container">
+      {/* <Grid container> */}
+      {/* <Grid item xs={12} sm={6} md={4} lg={3}> */}
       <div className="group-members-container">
         <h2>{name}</h2>
         <h5>Group members:</h5>
@@ -111,52 +120,56 @@ export default function MainPage() {
           })}
         </AvatarGroup>
 
-        <Autocomplete
-          options={filteredUsers}
-          isOptionEqualToValue={(option, value) =>
-            option.userName === value.userName
-          }
-          getOptionLabel={(option: any) => option.userName}
-          sx={{
-            marginTop: 2,
-            width: 300,
-            // alignSelf: 'flex-start',
-          }}
-          renderOption={(option: any, props: any) => {
-            const { id, userName, picture } = props;
+        {isEditor && (
+          <Autocomplete
+            options={filteredUsers}
+            isOptionEqualToValue={(option, value) =>
+              option.userName === value.userName
+            }
+            getOptionLabel={(option: any) => option.userName}
+            sx={{
+              marginTop: 2,
+              minWidth: 250,
+              // alignSelf: 'flex-start',
+            }}
+            renderOption={(option: any, props: any) => {
+              const { id, userName, picture } = props;
 
-            return (
-              <li
-                key={id}
-                className="autocomplete-option"
-                onClick={() =>
-                  linkGroupUser({ variables: { userId: id, groupId } })
-                }
-              >
-                <Avatar
+              return (
+                <li
                   key={id}
-                  alt={userName}
-                  src={picture}
-                  sx={{ marginRight: 1 }}
-                />
-                <div>{userName}</div>
-              </li>
-            );
-          }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Add member to group"
-              sx={{
-                bgcolor: 'white',
-                '& .MuiTextField-root': {
-                  backgroundColor: 'white',
-                },
-              }}
-            />
-          )}
-        />
+                  className="autocomplete-option"
+                  onClick={() =>
+                    linkGroupUser({ variables: { userId: id, groupId } })
+                  }
+                >
+                  <Avatar
+                    key={id}
+                    alt={userName}
+                    src={picture}
+                    sx={{ marginRight: 1 }}
+                  />
+                  <div>{userName}</div>
+                </li>
+              );
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Add member to group"
+                sx={{
+                  bgcolor: 'white',
+                  '& .MuiTextField-root': {
+                    backgroundColor: 'white',
+                  },
+                }}
+              />
+            )}
+          />
+        )}
       </div>
+      {/* </Grid> */}
+      {/* </Grid> */}
 
       <GigsPage />
     </div>

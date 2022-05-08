@@ -1,7 +1,7 @@
 {
   "name": "client-fixgix",
   "version": "0.1.0",
-  "homepage": "https://nemoprime86.github.io",
+  "homepage": "https://www.fixgix.com/ || https://nemoprime86.github.io",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.5.10",

@@ -163,7 +163,7 @@ export default function NewGigForm({ close }: { close: any }) {
         });
       }}
     >
-      <Form className="form-container px-3">
+      <Form id="new-gig" className="form-container px-3">
         <Grid container spacing="2">
           {/* <div className="row"> */}
           {/* <div className="col-12 col-md-10"> */}
@@ -310,10 +310,6 @@ export default function NewGigForm({ close }: { close: any }) {
               type="text"
               placeholder="At what time can you start cleaning up?"
             />
-
-            <Button variant="contained" type="submit" className="m-3">
-              Save
-            </Button>
           </Grid>
 
           <Grid item xs={12} sm={4} md={2} lg={2}>

@@ -20,14 +20,12 @@ export default function GigsDetailsIsViewer({ gigData }: { gigData: any }) {
     timeShowStart,
     timeShowEnd,
     timeCheckOut,
-    // gigsUsers,
-    // updated_at,
   } = gigData.gigs_by_pk;
 
   return (
     <div>
-      <h3>{gigStatus}</h3>
-      <div className="p-3 d-flex flex-wrap">
+      <div className="p-3 d-flex flex-column justify-content-around">
+        <h3>{gigStatus}</h3>
         <div className="details-block rounded">
           <h4>
             <u>Common details</u>

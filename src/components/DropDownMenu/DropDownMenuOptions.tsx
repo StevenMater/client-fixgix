@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from 'react';
 import { groupIdVar, isEditorVar, newGigVar } from '../../constants/cache';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useReactiveVar } from '@apollo/client';
+import { Box, Divider } from '@mui/material';
 
 export default function MenuListComposition({
   groupsUsers,
@@ -57,7 +58,7 @@ export default function MenuListComposition({
   }, [open]);
 
   //Logs
-  console.log('groupId', groupId);
+  // console.log('groupId', groupId);
 
   return (
     <Stack direction="row" spacing={2} sx={{ zIndex: 1000 }}>
@@ -72,6 +73,7 @@ export default function MenuListComposition({
         >
           <MenuIcon sx={{ fontSize: 50 }} />
         </Button>
+
         <Popper
           open={open}
           anchorEl={anchorRef.current}
@@ -96,35 +98,49 @@ export default function MenuListComposition({
                     aria-labelledby="composition-button"
                     onKeyDown={handleListKeyDown}
                   >
-                    {isEditor && (
-                      <MenuItem>
-                        <Button
-                          variant="contained"
-                          onClick={() => newGigVar(!newGigVar())}
-                        >
-                          New gig
-                        </Button>
-                      </MenuItem>
-                    )}
+                    <h6>
+                      <b>Groups</b>
+                    </h6>
+
+                    <Divider />
 
                     <MenuList>
-                      {groupsUsers.map((group: any) => {
-                        const { id, name } = group.group;
+                      {groupsUsers.length === 0 ? (
+                        <Box sx={{ marginX: 1 }}>No groups</Box>
+                      ) : (
+                        groupsUsers.map((group: any) => {
+                          const { id, name } = group.group;
 
-                        return (
-                          <MenuItem
-                            key={id}
-                            value={id}
-                            onClick={() => {
-                              groupIdVar(id);
-                              handleToggle();
-                            }}
-                          >
-                            {name}
-                          </MenuItem>
-                        );
-                      })}
+                          return (
+                            <MenuItem
+                              key={id}
+                              value={id}
+                              onClick={() => {
+                                groupIdVar(id);
+                                handleToggle();
+                              }}
+                            >
+                              {name}
+                            </MenuItem>
+                          );
+                        })
+                      )}
                     </MenuList>
+
+                    {isEditor && groupsUsers.length > 0 && (
+                      <div>
+                        <Divider />
+                        <MenuItem>
+                          <Button
+                            variant="contained"
+                            onClick={() => newGigVar(!newGigVar())}
+                            sx={{ marginTop: 1 }}
+                          >
+                            New gig
+                          </Button>
+                        </MenuItem>
+                      </div>
+                    )}
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

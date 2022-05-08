@@ -161,7 +161,12 @@ export default function GigsDetailsIsEditor({ gigData }: { gigData: any }) {
           );
         }}
         sx={{
-          width: 300,
+          width: {
+            xs: 300,
+            sm: 200,
+            md: 300,
+            lg: 400,
+          },
           margin: 2,
         }}
         renderInput={(params) => (
@@ -283,7 +288,7 @@ export default function GigsDetailsIsEditor({ gigData }: { gigData: any }) {
           });
         }}
       >
-        <Form className="px-3">
+        <Form id="update-gig" className="px-3">
           <MySelect label="Gig status" name="gigStatus">
             <MenuItem value="requested">Requested</MenuItem>
             <MenuItem value="offered">Offered</MenuItem>
@@ -428,10 +433,6 @@ export default function GigsDetailsIsEditor({ gigData }: { gigData: any }) {
           />
 
           <MyTextField label="Notes" name="gigNotes" type="text" />
-
-          <Button variant="contained" type="submit">
-            Save
-          </Button>
         </Form>
       </Formik>
     </div>

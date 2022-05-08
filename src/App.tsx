@@ -10,23 +10,20 @@ import {
   useReactiveVar,
 } from '@apollo/client';
 
+//MUI
+import { ThemeProvider } from '@mui/material';
+
 //Components
 import NavBar from './components/NavBar/NavBar';
 import Loading from './components/Loading/Loading';
 import NewGig from './components/NewGig /NewGig';
-
-//Pages
-import GigsPage from './pages/GigsPage/GigsPage';
 import LoginPage from './pages/LoginPage/LoginPage';
-
-//Cache
-import { groupIdVar, newGigVar, userIdVar } from './constants/cache';
-import { ThemeProvider } from '@mui/material';
-import { theme } from './constants/colors';
 import WelcomePage from './pages/WelcomePage/WelcomePage';
 import MainPage from './pages/MainPage/MainPage';
 
-//Env constants
+//Constants
+import { groupIdVar, newGigVar, userIdVar } from './constants/cache';
+import { theme } from './constants/colors';
 const graphqlUri: string = process.env.REACT_APP_GRAPHQL_URI as string;
 const audience: string = process.env.REACT_APP_AUTH0_AUDIENCE as string;
 

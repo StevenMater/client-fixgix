@@ -83,7 +83,7 @@ export default function GigsPage() {
                     </h4>
                   </div>
 
-                  <AvatarGroup max={8}>
+                  <AvatarGroup max={5}>
                     {gigsUsers.map((user: any) => {
                       const { id, picture, firstName, lastName } = user.user;
 

@@ -13,3 +13,9 @@
   padding: 3em;
   margin: 1em;
 }
+
+.gigs-details-bottom-menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

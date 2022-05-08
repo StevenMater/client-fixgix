@@ -63,7 +63,12 @@ export default function NewGig() {
                 New gig
               </Typography>
 
-              <Button autoFocus color="inherit" className="fixed">
+              <Button
+                form="new-gig"
+                type="submit"
+                color="inherit"
+                className="fixed"
+              >
                 save
               </Button>
             </Toolbar>

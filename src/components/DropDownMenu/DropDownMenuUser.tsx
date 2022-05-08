@@ -18,6 +18,7 @@ import { FormControlLabel, FormGroup, Switch } from '@mui/material';
 //Constants
 import { mainTextColor } from '../../constants/colors';
 import { isEditorVar } from '../../constants/cache';
+const redirectUri: string = process.env.REACT_APP_AUTH0_REDIRECT_URI as string;
 
 export default function DropDownMenuUser({
   userDetails,
@@ -111,9 +112,7 @@ export default function DropDownMenuUser({
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem
-          onClick={() => logout({ returnTo: 'http://localhost:3000/login' })}
-        >
+        <MenuItem onClick={() => logout({ returnTo: `${redirectUri}/login` })}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
