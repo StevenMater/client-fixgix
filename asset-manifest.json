@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.d3826dd2.css",
-    "main.js": "/static/js/main.56f0d39b.js",
-    "index.html": "/index.html",
-    "main.d3826dd2.css.map": "/static/css/main.d3826dd2.css.map",
-    "main.56f0d39b.js.map": "/static/js/main.56f0d39b.js.map"
+    "main.css": "/%20||%20https://nemoprime86.github.io/static/css/main.47268aac.css",
+    "main.js": "/%20||%20https://nemoprime86.github.io/static/js/main.f5eba4c4.js",
+    "index.html": "/%20||%20https://nemoprime86.github.io/index.html",
+    "main.47268aac.css.map": "/%20||%20https://nemoprime86.github.io/static/css/main.47268aac.css.map",
+    "main.f5eba4c4.js.map": "/%20||%20https://nemoprime86.github.io/static/js/main.f5eba4c4.js.map"
   },
   "entrypoints": [
-    "static/css/main.d3826dd2.css",
-    "static/js/main.56f0d39b.js"
+    "static/css/main.47268aac.css",
+    "static/js/main.f5eba4c4.js"
   ]
 }
